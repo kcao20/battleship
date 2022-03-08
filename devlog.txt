@@ -13,3 +13,7 @@ moved order of objects around for clarity
 andyL -- 2022-03-07 07:74
 
 Updated the SQLite storage table with typings
+
+austinN -- 2022-03-08 09:00
+
+Added initial files for the app to run
