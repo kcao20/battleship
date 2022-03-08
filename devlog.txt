@@ -1,0 +1,11 @@
+Bilgewater Brigadiers: Kevin Cao (Pipi), Andy Lin (Sam), Austin Ngan (Gerald), Shadman (Ducky)
+SoftDev
+P02
+2021-03-01
+
+kevinC -- 2022-03-07 22:09
+
+Added new iteration of design doc:
+more detailed site/component map
+added CSS framework
+moved order of objects around for clarity
