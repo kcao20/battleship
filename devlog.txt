@@ -17,3 +17,4 @@ Updated the SQLite storage table with typings
 austinN -- 2022-03-08 09:00
 
 Added initial files for the app to run
+created database.py to store leaderboard/user stats
