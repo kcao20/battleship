@@ -9,3 +9,7 @@ Added new iteration of design doc:
 more detailed site/component map
 added CSS framework
 moved order of objects around for clarity
+
+andyL -- 2022-03-07 07:74
+
+Updated the SQLite storage table with typings
