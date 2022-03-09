@@ -44,3 +44,48 @@ cur.execute("""
 
 db.commit()
 db.close()
+
+def add_userC(username):
+	db = sqlite3.connect(DB_FILE)
+	c = db.cursor()
+	
+	c.execute(SELECT * FROM users WHERE LOWER(username) = LOWER(?)", (username,))
+	check = c.fetchone()
+	
+	if row is not None:
+		return False
+		
+	c.execute("""INSERT INTO usersClassic(username) VALUES(?)""", (username))
+	db.commit()
+	db.close()
+	return True
+
+def add_userM(username):
+	db = sqlite3.connect(DB_FILE)
+	c = db.cursor()
+	
+	c.execute("SELECT * FROM users WHERE LOWER(username) = LOWER(?)", (username,))
+	check = c.fetchone()
+	
+	if row is not None:
+		return False
+		
+	c.execute("""INSERT INTO usersModern(username) VALUES(?)""", (username))
+	db.commit()
+	db.close()
+	return True
+	
+	
+def add_statsC(username,win,shotsHit,shotsMissed):
+	db = sqlite3.connect(DB_FILE)
+	c = db.cursor()
+	
+	c.execute("SELECT * FROM usersC WHERE id = ?", (username,))
+	
+	
+	db.close()
+
+
+def add_statsM(username,win,shotsHit,shotsMissed,powersUsed):
+
+
