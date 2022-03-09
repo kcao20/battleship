@@ -21,4 +21,12 @@ created database.py to store leaderboard/user stats
 
 kevinC -- 2022-03-08 09:23
 
-Add instructions to README.md
+Add instructions for local machine to README.md
+
+austinN -- 2022-03-09 09:23
+
+Added initial functions to create new entries to track stats for users in database.py
+
+kevinC -- 2022-03-09 09:24
+
+Add instructions for setting up project on Digital Ocean
