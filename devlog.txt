@@ -23,6 +23,11 @@ kevinC -- 2022-03-08 09:23
 
 Add instructions for local machine to README.md
 
+andyL -- 2022-03-08 09:26
+
+Tried to get a navbar set up for the website via Bootstrap
+Implemented Bootstrap CSS and JS libraries
+
 austinN -- 2022-03-09 09:23
 
 Added initial functions to create new entries to track stats for users in database.py
@@ -30,3 +35,9 @@ Added initial functions to create new entries to track stats for users in databa
 kevinC -- 2022-03-09 09:24
 
 Add instructions for setting up project on Digital Ocean
+
+andyL -- 2022-03-09 09:26
+
+Got the navbar to work (turns out the instructions I was using was for an older version of bootstrap and that didn't work with my latest version)
+Made classes for the boats and fields
+Kinda helped with implementing the leaderboard
