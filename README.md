@@ -26,12 +26,13 @@ source venv/bin/activate
 
 ### 3. Install dependencies:
 ```
+cd battleship
 pip3 install -r requirements.txt  
 ```
 
 ### 4. Navigate to the directory and run:
 ```
-cd battleship/app
+cd app
 python3 __init__.py
 ```
 
