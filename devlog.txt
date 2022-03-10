@@ -47,3 +47,10 @@ andyL -- 2022-03-10 09:26
 Grid now renders in canvas
 Made the grid report where cursor clicked (snapping to each cell)
 Properly hooked the js script up with the site
+
+kevinC -- 2022-03-10 02:57
+
+Use template inheritance
+Fix footer not being at bottom of viewport
+Add favicon
+Add jinja macros
