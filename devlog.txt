@@ -41,3 +41,9 @@ andyL -- 2022-03-09 09:26
 Got the navbar to work (turns out the instructions I was using was for an older version of bootstrap and that didn't work with my latest version)
 Made classes for the boats and fields
 Kinda helped with implementing the leaderboard
+
+andyL -- 2022-03-10 09:26
+
+Grid now renders in canvas
+Made the grid report where cursor clicked (snapping to each cell)
+Properly hooked the js script up with the site
