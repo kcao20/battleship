@@ -2,22 +2,20 @@
 {% block title %}Home{% endblock %}
 {% block head%}
 {{ super() }}
-<style type="text/css">
-  .important {
-    color: #336699;
-  }
-</style>
 {% endblock %}
 {% block content %}
 <style>
-  #playground {
+  .important {
+    color: #336699;
+  }
+  #board {
     border: 1px solid black;
   }
 </style>
 
-<div style="text-align: center">
-  <canvas width="600" height="600" id="playground"></canvas>
+<div class="text-center">
+  <canvas width="600" height="600" id="board"></canvas>
 </div>
 
-<script src="{{url_for('static', filename='battleship.js')}}"></script>
+<script src="/static/js/battleship.js"></script>
 {% endblock %}

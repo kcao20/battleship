@@ -33,3 +33,30 @@ class Field{
         }
     }
 }
+
+let canvas = document.getElementById("board");
+let context = canvas.getContext("2d");
+
+function renderGrid() {
+    for (var i = canvas.offsetWidth / 10; i < canvas.offsetWidth; i += canvas.offsetWidth / 10){
+        context.moveTo(i, 0);
+        context.lineTo(i, canvas.offsetHeight);
+    }
+
+    for (var i = canvas.offsetHeight / 10; i < canvas.offsetHeight; i += canvas.offsetHeight / 10){
+        context.moveTo(0, i);
+        context.lineTo(canvas.offsetWidth, i);
+    }
+
+    context.strokeStyle = "black";
+    context.stroke();
+}
+
+function readClicks(e) {
+    const rect = canvas.getBoundingClientRect()
+    console.log(Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10)), Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10)));
+}
+
+renderGrid();
+
+canvas.addEventListener('click', readClicks)
