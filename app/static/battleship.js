@@ -52,8 +52,9 @@ function renderGrid() {
     context.stroke();
 }
 
-function readClicks(e){
-    console.log(e.clientX)
+function readClicks(e) {
+    const rect = canvas.getBoundingClientRect()
+    console.log(Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10)), Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10)));
 }
 
 renderGrid();
