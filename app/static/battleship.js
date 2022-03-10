@@ -34,14 +34,22 @@ class Field{
     }
 }
 
-var canvas = document.getElementById("board");
-var context = canvas.getContext("2d");
+let canvas = document.getElementById("board");
+let context = canvas.getContext("2d");
 
-function renderGrid(){
-    for (let i = 1; i < canvas.offsetWidth; i += canvas.offsetWidth / 10){
-        context.moveTo(40 * i, 0);
-        context.lineTo(40 * i, context.offsetHeight)
+function renderGrid() {
+    for (var i = canvas.offsetWidth / 10; i < canvas.offsetWidth; i += canvas.offsetWidth / 10){
+        context.moveTo(i, 0);
+        context.lineTo(i, canvas.offsetHeight);
     }
+
+    for (var i = canvas.offsetHeight / 10; i < canvas.offsetHeight; i += canvas.offsetHeight / 10){
+        context.moveTo(0, i);
+        context.lineTo(canvas.offsetWidth, i);
+    }
+
+    context.strokeStyle = "black";
+    context.stroke();
 }
 
 renderGrid();
