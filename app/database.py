@@ -49,10 +49,10 @@ def add_userC(username):
 	db = sqlite3.connect(DB_FILE)
 	c = db.cursor()
 	
-	c.execute(SELECT * FROM users WHERE LOWER(username) = LOWER(?)", (username,))
+	c.execute("SELECT * FROM usersClassic WHERE LOWER(username) = LOWER(?)", (username,))
 	check = c.fetchone()
 	
-	if row is not None:
+	if check is not None:
 		return False
 		
 	c.execute("""INSERT INTO usersClassic(username) VALUES(?)""", (username))
@@ -67,7 +67,7 @@ def add_userM(username):
 	c.execute("SELECT * FROM users WHERE LOWER(username) = LOWER(?)", (username,))
 	check = c.fetchone()
 	
-	if row is not None:
+	if check is not None:
 		return False
 		
 	c.execute("""INSERT INTO usersModern(username) VALUES(?)""", (username))
@@ -75,17 +75,29 @@ def add_userM(username):
 	db.close()
 	return True
 	
-	
+#win is a boolean, shotsHit/shotsMissed are integers	
 def add_statsC(username,win,shotsHit,shotsMissed):
 	db = sqlite3.connect(DB_FILE)
 	c = db.cursor()
 	
-	c.execute("SELECT * FROM usersC WHERE id = ?", (username,))
-	
-	
+	if win:
+		c.execute("""
+					UPDATE usersClassic
+						SET gamesPlayed = gamesPlayed + 1
+						SET gamesWon = gamesWon + 1
+						SET shotsLanded = shotsLanded + ?
+						SET shotsMissed = shotsMissed + ? 
+					WHERE username = ?""", (shotsHit, shotsMissed, username))
+	else:
+		c.execute("""
+					UPDATE usersClassic
+						SET gamesPlayed = gamesPlayed + 1
+						SET gamesLost = gamesLost + 1
+						SET shotsLanded = shotsLanded + ?
+						SET shotsMissed = shotsMissed + ? 
+					WHERE username = ?""", (shotsHit, shotsMissed, username))
+	db.commit()
 	db.close()
-
-
-def add_statsM(username,win,shotsHit,shotsMissed,powersUsed):
+	return True
 
 
