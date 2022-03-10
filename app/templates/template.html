@@ -1,3 +1,5 @@
+{% from "macros.html" import nav_link with context %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -34,12 +36,8 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/leaderboard">Leaderboard</a>
-              </li>
+              {{ nav_link('index', 'Home') }}
+              {{ nav_link('leaderboard', 'Leaderboard')}}
             </ul>
           </div>
         </div>
