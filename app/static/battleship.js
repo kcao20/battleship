@@ -52,4 +52,10 @@ function renderGrid() {
     context.stroke();
 }
 
+function readClicks(e){
+    console.log(e.clientX)
+}
+
 renderGrid();
+
+canvas.addEventListener('click', readClicks)
