@@ -56,7 +56,7 @@ cd FlaskApp
 ### 3. Clone the repository
 ```
 git clone https://github.com/kcao20/battleship.git
-cp battleship/app FlaskApp
+mkdir FlaskApp && cp -r battleship/app/* FlaskApp
 ```
 
 ### 4. Create and activate a virtual enviroment:
@@ -67,7 +67,7 @@ source venv/bin/activate
 
 ### 5. Install dependencies:
 ```
-cd battleship
+cd FlaskApp
 pip3 install -r requirements.txt  
 ```
 
