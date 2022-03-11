@@ -54,3 +54,9 @@ Use template inheritance
 Fix footer not being at bottom of viewport
 Add favicon
 Add jinja macros
+
+andyL -- 2022-03-11 20:31
+
+Grid renders ships now
+Can click and drag ships (although UI doesn't rerender to show where the item is at)
+Can sink ships now (when ship goes wrong)
