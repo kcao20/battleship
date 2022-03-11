@@ -97,6 +97,7 @@ function readClicks(e) {
         drag = false;
         field.field[getGridY(e)][getGridX(e)] = field.field[toMoveBoatY][toMoveBoatX];
         field.field[toMoveBoatY][toMoveBoatX] = null;
+        document.body.style.cursor = 'default';
     } else if (!field.hitLocations[getGridY(e)][getGridX(e)]){
         field.hitLocations[getGridY(e)][getGridX(e)] = true;
         if (field.field[getGridY(e)][getGridX(e)] instanceof Boat) {
@@ -111,6 +112,7 @@ function readClicks(e) {
 
 function readClickStart(e) {
     drag = true;
+    document.body.style.cursor = 'move';
     toMoveBoatX = getGridX(e);
     toMoveBoatY = getGridY(e);
     // console.log(getGridX(e), getGridY(e));
@@ -120,7 +122,8 @@ function readHoverCoordinate(e) {
     // console.log(getGridX(e), getGridY(e));
     if (0 <= getGridY(e) && getGridY(e) < 10 && 0 <= getGridX(e) && getGridX(e) < 10 && field.field[getGridY(e)][getGridX(e)] instanceof Boat) {
         document.body.style.cursor = 'move';
-    } else {
+    }
+    else if (!drag){
         document.body.style.cursor = 'default';
     }
 }
