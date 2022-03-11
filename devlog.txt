@@ -48,14 +48,18 @@ Grid now renders in canvas
 Made the grid report where cursor clicked (snapping to each cell)
 Properly hooked the js script up with the site
 
-kevinC -- 2022-03-10 02:57
+austinN -- 2022-03-10 09:26
+
+Added database functions
+
+kevinC -- 2022-03-10 14:57
 
 Use template inheritance
 Fix footer not being at bottom of viewport
 Add favicon
 Add jinja macros
 
-andyL -- 2022-03-11 20:31
+andyL -- 2022-03-10 20:31
 
 Grid renders ships now
 Can click and drag ships (although UI doesn't rerender to show where the item is at)
