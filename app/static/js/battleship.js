@@ -44,17 +44,18 @@ let field = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,
 
 function renderGrid() {
     for (let i = canvas.offsetWidth / 10; i < canvas.offsetWidth; i += canvas.offsetWidth / 10){
+        context.beginPath();
         context.moveTo(i, 0);
         context.lineTo(i, canvas.offsetHeight);
+        context.stroke();
     }
 
     for (let i = canvas.offsetHeight / 10; i < canvas.offsetHeight; i += canvas.offsetHeight / 10){
+        context.beginPath();
         context.moveTo(0, i);
         context.lineTo(canvas.offsetWidth, i);
+        context.stroke();
     }
-
-    context.strokeStyle = "black";
-    context.stroke();
 }
 
 function renderBoats() {
@@ -96,13 +97,13 @@ function readClicks(e) {
         drag = false;
         field.field[getGridY(e)][getGridX(e)] = field.field[toMoveBoatY][toMoveBoatX];
         field.field[toMoveBoatY][toMoveBoatX] = null;
-        context.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
     } else if (!field.hitLocations[getGridY(e)][getGridX(e)]){
         field.hitLocations[getGridY(e)][getGridX(e)] = true;
         if (field.field[getGridY(e)][getGridX(e)] instanceof Boat) {
             field.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
         }
     }
+    context.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
     renderBoats();
     renderHits();
     renderGrid();
