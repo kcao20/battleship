@@ -67,3 +67,12 @@ Can sink ships now (when ship goes wrong)
 
 kevinC -- 2022-03-11 09:27
 
+Add correct options for leaderboard page (does nothing at the moment)
+Add table for leaderboard page
+Use grid system for home page
+
+andyL -- 2022-03-10 09:37
+
+Adjust some cursor behavior (especially with moving ships)
+Tried to implement two boards
+
