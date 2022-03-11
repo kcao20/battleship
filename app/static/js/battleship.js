@@ -28,8 +28,8 @@ class Field{
 
     registerHit(pointX, pointY) {
         this.hitLocations.push((pointX, pointY));
-        if (field[pointX][pointY]) {
-            field[pointX][pointY].registerHit(pointX, pointY);
+        if (this.field[pointX][pointY]) {
+            this.field[pointX][pointY].registerHit(pointX, pointY);
         }
     }
 }
@@ -39,8 +39,10 @@ let context = canvas.getContext("2d");
 let drag = false;
 let toMoveBoatX = -1;
 let toMoveBoatY = -1;
+let startButton = document.getElementById("start");
+let player1SetupComplete = false;
 
-let field = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
+let fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
 
 function renderGrid() {
     for (let i = canvas.offsetWidth / 10; i < canvas.offsetWidth; i += canvas.offsetWidth / 10){
@@ -58,7 +60,7 @@ function renderGrid() {
     }
 }
 
-function renderBoats() {
+function renderBoats(field) {
     context.fillStyle = "blue";
 
     for (let i = 0; i < field.field.length; i++){
@@ -70,7 +72,7 @@ function renderBoats() {
     }
 }
 
-function renderHits() {
+function renderHits(field) {
     context.fillStyle = "red";
 
     for (let i = 0; i < field.hitLocations.length; i++){
@@ -92,10 +94,10 @@ function getGridY(e) {
     return Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10));
 }
 
-function readClicks(e) {
+function readClicks(field, e) {
     if (drag && !(field.field[getGridY(e)][getGridX(e)] instanceof Boat) && !(getGridX(e) == toMoveBoatX && getGridY(e) == toMoveBoatY)) {
         drag = false;
-        field.field[getGridY(e)][getGridX(e)] = field.field[toMoveBoatY][toMoveBoatX];
+        field.field[getGridY(e)][getGridX(e)] = this.field.field[toMoveBoatY][toMoveBoatX];
         field.field[toMoveBoatY][toMoveBoatX] = null;
         document.body.style.cursor = 'default';
     } else if (!field.hitLocations[getGridY(e)][getGridX(e)]){
@@ -118,7 +120,7 @@ function readClickStart(e) {
     // console.log(getGridX(e), getGridY(e));
 }
 
-function readHoverCoordinate(e) {
+function readHoverCoordinate(field, e) {
     // console.log(getGridX(e), getGridY(e));
     if (0 <= getGridY(e) && getGridY(e) < 10 && 0 <= getGridX(e) && getGridX(e) < 10 && field.field[getGridY(e)][getGridX(e)] instanceof Boat) {
         document.body.style.cursor = 'move';
@@ -128,9 +130,22 @@ function readHoverCoordinate(e) {
     }
 }
 
-renderBoats();
-renderGrid();
+renderBoats(fieldPlayer1);
+renderGrid(fieldPlayer1);
 
-canvas.addEventListener('click', readClicks);
-canvas.addEventListener('mousedown', readClickStart);
-canvas.addEventListener('mousemove', readHoverCoordinate);
+function gameStart(playerName) {
+    alert("Player "+playerName+", set up your field!");
+}
+
+function player1EndSetup() {
+    player1SetupComplete = true;
+    gameStart("2");
+    
+}
+
+gameStart("1");
+
+canvas.addEventListener('click', readClicks.bind(fieldPlayer1));
+canvas.addEventListener('mousedown', readClickStart.bind(fieldPlayer1));
+canvas.addEventListener('mousemove', readHoverCoordinate.bind(fieldPlayer1));
+startButton.addEventListener('click', gameStart);
