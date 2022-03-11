@@ -5,8 +5,21 @@
 {% endblock %}
 {% block content %}
 <form>
-  <select id="dataType" name="dataType">
-    <option value="wrRatio">Win/Loss Ratio</option>
+  <select class="form-select" id="dataType" name="dataType">
+    <option value="classic-top">Classic Leaderboard</option>
+    <option value="modern-top">Modern Leaderboard</option>
+    <option value="classic">Classic Stats</option>
+    <option value="modern">Modern Stats</option>
   </select>
 </form>
+<table class="table">
+  <tr>
+    <th>Games Played</th>
+    <th>Games Won</th>
+    <th>Win Ratio</th>
+    <th>Ships Sunk</th>
+    <th>Hit Ratio</th>
+    <th>Powers Used</th>
+  </tr>
+</table>
 {% endblock %}

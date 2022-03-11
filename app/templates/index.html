@@ -13,8 +13,14 @@
   }
 </style>
 
-<div class="text-center">
-  <canvas width="600" height="600" id="board"></canvas>
+<div class="row mx-auto">
+  <div class="col-9 text-center">
+    <canvas width="600" height="600" id="board"></canvas>
+  </div>
+  <div class="col align-self-center">
+    <p>It is current player {{ player }}'s' turn</p>
+    <p>You current have {{ energy }} energy</p>
+  </div>
 </div>
 
 <script src="/static/js/battleship.js"></script>
