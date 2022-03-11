@@ -19,7 +19,7 @@ class Boat{
 }
 
 class Field{
-    hitLocations = [];
+    hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
     field;
 
     constructor(field) {
@@ -63,41 +63,62 @@ function renderBoats() {
     for (let i = 0; i < field.field.length; i++){
         for (let v = 0; v < field.field[i].length; v++){
             if (field.field[i][v] instanceof Boat) {
-                console.log("ppmode");
                 context.fillRect(v * canvas.offsetWidth / 10, i * canvas.offsetHeight / 10, canvas.offsetWidth / 10, canvas.offsetHeight / 10);
             }
         }
     }
 }
 
-function readClicks(e) {
-    const rect = canvas.getBoundingClientRect();
-    if (drag && !(field.field[Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10))][Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10))] instanceof Boat)) {
-        drag = false;
-        field.field[Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10))][Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10))] = field.field[toMoveBoatY][toMoveBoatX];
-        field.field[toMoveBoatY][toMoveBoatX] = null;
-        context.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
-        renderBoats();
-        renderGrid();
+function renderHits() {
+    context.fillStyle = "red";
+
+    for (let i = 0; i < field.hitLocations.length; i++){
+        for (let v = 0; v < field.hitLocations[i].length; v++){
+            if (field.hitLocations[i][v]) {
+                context.fillRect(v * canvas.offsetWidth / 10, i * canvas.offsetHeight / 10, canvas.offsetWidth / 10, canvas.offsetHeight / 10);
+            }
+        }
     }
 }
 
-function readClickStart(e) {
+function getGridX(e) {
     const rect = canvas.getBoundingClientRect();
+    return Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10));
+}
+
+function getGridY(e) {
+    const rect = canvas.getBoundingClientRect();
+    return Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10));
+}
+
+function readClicks(e) {
+    if (drag && !(field.field[getGridY(e)][getGridX(e)] instanceof Boat) && !(getGridX(e) == toMoveBoatX && getGridY(e) == toMoveBoatY)) {
+        drag = false;
+        field.field[getGridY(e)][getGridX(e)] = field.field[toMoveBoatY][toMoveBoatX];
+        field.field[toMoveBoatY][toMoveBoatX] = null;
+        context.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
+    } else {
+        field.hitLocations[getGridY(e)][getGridX(e)] = true;
+    }
+    renderBoats();
+    renderHits();
+    renderGrid();
+}
+
+function readClickStart(e) {
     drag = true;
-    toMoveBoatX = Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10));
-    toMoveBoatY = Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10));
-    console.log(Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10)), Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10)));
+    toMoveBoatX = getGridX(e);
+    toMoveBoatY = getGridY(e);
+    console.log(getGridX(e), getGridY(e));
 }
 
 function readHoverCoordinate(e) {
-    const rect = canvas.getBoundingClientRect();
-    console.log(Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10)), Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10)));
-    if (0 <= Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10))
-        && Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10)) < 10
-        && 0 <= Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10))
-        && Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10)) < 10
-        && field.field[Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10))][Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10))] instanceof Boat) {
+    console.log(getGridX(e), getGridY(e));
+    if (0 <= getGridY(e)
+        && getGridY(e) < 10
+        && 0 <= getGridX(e)
+        && getGridX(e) < 10
+        && field.field[getGridY(e)][getGridX(e)] instanceof Boat) {
         document.body.style.cursor = 'move';
     } else {
         document.body.style.cursor = 'default';
