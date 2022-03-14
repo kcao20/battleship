@@ -21,6 +21,7 @@ class Boat{
 class Field{
     hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
     field;
+    setupDone = false;
 
     constructor(field) {
         this.field = field;
@@ -40,7 +41,7 @@ let drag = false;
 let toMoveBoatX = -1;
 let toMoveBoatY = -1;
 let startButton = document.getElementById("start");
-let player1SetupComplete = false;
+let currentPlayer = 1;
 
 let fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
 let fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
@@ -136,23 +137,51 @@ function readHoverCoordinate(e) {
     }
 }
 
-renderBoats();
-renderGrid();
+function player1EndSetup() {
+    currentField.setupDone = true;
+    gameStart("2");
+    currentField = fieldPlayer2;
+    currentPlayer = 2;
+    renderBoard();
+}
+
+function passTurn() {
+    currentField.setupDone = true;
+    if (currentPlayer == 2){
+        currentPlayer = 1;
+        currentField = fieldPlayer1;
+        renderBoard();
+    } else {
+        currentPlayer = 2;
+        currentField = fieldPlayer2;
+        renderBoard();
+    }
+    tellPlayerTurn(String(currentPlayer));
+}
+
+function startButtonFunc() {
+    if (currentPlayer == 2 && !fieldPlayer2.setupDone) {
+        fieldPlayer2.setupDone = true;
+    }
+    if (!fieldPlayer2.setupDone) {
+        player1EndSetup();
+    } else {
+        passTurn();
+    }
+}
 
 function gameStart(playerName) {
     alert("Player "+playerName+", set up your field!");
 }
 
-function player1EndSetup() {
-    player1SetupComplete = true;
-    gameStart("2");
-    currentField = fieldPlayer2;
-    renderBoard();
+function tellPlayerTurn(playerName) {
+    alert("Player "+playerName+", it's your turn!");
 }
 
+renderBoard();
 gameStart("1");
 
 canvas.addEventListener('click', readClicks);
 canvas.addEventListener('mousedown', readClickStart);
 canvas.addEventListener('mousemove', readHoverCoordinate);
-startButton.addEventListener('click', player1EndSetup);
+startButton.addEventListener('click', startButtonFunc);
