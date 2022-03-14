@@ -84,3 +84,8 @@ Finished adding update functions for database that is used after the game is fin
 kevinC -- 2022-03-14 09:23
 
 Change table displayed based on select dropdown using js
+
+andyL -- 2022-03-14 09:26
+
+Two boards now work
+Added capability to pass turn
