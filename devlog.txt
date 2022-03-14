@@ -76,3 +76,7 @@ andyL -- 2022-03-10 09:37
 Adjust some cursor behavior (especially with moving ships)
 Tried to implement two boards
 
+austinN -- 2022-03-14 09:23
+
+Finally fixed database.py, correctly updates elements in database
+Finished adding update functions for database that is used after the game is finished
