@@ -106,7 +106,7 @@ function readClicks(e) {
         currentField.field[toMoveBoatY][toMoveBoatX] = null;
         document.body.style.cursor = 'default';
         renderBoard(currentBoardContext, currentField);
-    } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)]){
+    } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)] && currentField.setupDone){
         currentField.hitLocations[getGridY(e)][getGridX(e)] = true;
         renderEnemyBoard(currentBoardContext, currentField);
         setTimeout(function () {
