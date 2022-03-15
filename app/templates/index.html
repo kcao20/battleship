@@ -8,14 +8,17 @@
   .important {
     color: #336699;
   }
-  #board {
+  .board {
     border: 1px solid black;
   }
 </style>
 
 <div class="row mx-auto">
   <div class="col-9 text-center">
-    <canvas width="600" height="600" id="board"></canvas>
+    <canvas width="600" height="600" class="board" id="currentBoard"></canvas>
+  </div>
+  <div class="col-9 text-center">
+    <canvas width="600" height="600" class="board" id="otherBoard" style="display: none;"></canvas>
   </div>
   <div class="col align-self-center">
     <p>It is current player {{ player }}'s' turn</p>
