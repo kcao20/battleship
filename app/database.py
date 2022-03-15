@@ -33,10 +33,15 @@ db.close()
 def add_userC(username):
 	db = sqlite3.connect(DB_FILE)
 	c = db.cursor()
-
-	#need to add check for duplicate names
-
-	c.execute("""INSERT INTO usersClassic(username,gamesPlayed,gamesWon,gamesLost,shotsMissed,shotsLanded) VALUES(?, ?, ?, ?, ?, ?)""", (username,0,0,0,0,0))
+	
+	c.execute("SELECT * FROM usersClassic WHERE LOWER(username) = LOWER(?)", (username,))
+	check = c.fetchone()
+	
+	if check is not None:
+		return False
+		
+	else:
+		c.execute("""INSERT INTO usersClassic(username,gamesPlayed,gamesWon,gamesLost,shotsMissed,shotsLanded) VALUES(?, ?, ?, ?, ?, ?)""", (username,0,0,0,0,0))
 	db.commit()
 	db.close()
 	return True
