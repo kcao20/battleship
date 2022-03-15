@@ -101,3 +101,4 @@ kevinC -- 2022-03-15 11:20
 Align actual database columns to html.
 Pass data from database to table
 Causes division by zero error depending on database entries
+Don't display any stats if they have any zeroes
