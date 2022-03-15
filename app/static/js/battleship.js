@@ -28,7 +28,6 @@ class Field{
     }
     
     registerHit(pointX, pointY) {
-        this.hitLocations.push((pointX, pointY));
         if (this.field[pointX][pointY]) {
             this.field[pointX][pointY].registerHit(pointX, pointY);
         }
@@ -103,13 +102,17 @@ function readClicks(e) {
         currentField.field[getGridY(e)][getGridX(e)] = currentField.field[toMoveBoatY][toMoveBoatX];
         currentField.field[toMoveBoatY][toMoveBoatX] = null;
         document.body.style.cursor = 'default';
+        renderBoard();
     } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)]){
         currentField.hitLocations[getGridY(e)][getGridX(e)] = true;
-        if (currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
-            currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
-        }
+        renderBoard();
+        setTimeout(function () {
+            if (currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
+                currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
+            }
+            passTurn();
+        }, 0)
     }
-    renderBoard();
 }
 
 function renderBoard() {
@@ -179,6 +182,11 @@ function gameStart(playerName) {
 
 function tellPlayerTurn(playerName) {
     alert("Player "+playerName+", it's your turn!");
+}
+
+function renderEnemyBoard() {
+    renderGrid();
+    renderHits();
 }
 
 renderBoard();
