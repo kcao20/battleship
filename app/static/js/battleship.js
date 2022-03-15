@@ -1,4 +1,11 @@
 class Boat{
+
+    length;
+    orientation;
+
+    x; 
+    y;
+
     locations;
     hitLocations = [];
     isSunk = false;
