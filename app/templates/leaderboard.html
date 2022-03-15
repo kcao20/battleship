@@ -5,22 +5,34 @@
 {% endblock %}
 {% block content %}
 <select class="form-select" id="dataType" name="dataType">
-  <option value="classic-top">Classic Leaderboard</option>
+  <option value="classic-top" aira-selected>Classic Leaderboard</option>
   <option value="modern-top">Modern Leaderboard</option>
-  <option value="classic">Classic Stats</option>
-  <option value="modern">Modern Stats</option>
 </select>
 
-<div id="classic-top" class="inv">
+<div id="classic-top" class="vis">
   <table class="table">
     <tr>
       <th>Username</th>
       <th>Games Played</th>
       <th>Games Won</th>
+      <th>Games Lost</th>
       <th>Win Ratio</th>
-      <th>Ships Sunk</th>
+      <th>Shots Missed</th>
+      <th>Shots Landed</th>
       <th>Hit Ratio</th>
     </tr>
+    {% for i in classic %}
+    <tr>
+      <td>{{ i[0] }}</td>
+      <td>{{ i[1] }}</td>
+      <td>{{ i[2] }}</td>
+      <td>{{ i[3] }}</td>
+      <td>{{ i[2] / i[1] }}</td>
+      <td>{{ i[4] }}</td>
+      <td>{{ i[5] }}</td>
+      <td>{{ i[5] / (i[4] + i[5]) }}</td>
+    </tr>
+    {% endfor %}
   </table>
 </div>
 
@@ -30,36 +42,26 @@
       <th>Username</th>
       <th>Games Played</th>
       <th>Games Won</th>
+      <th>Games Lost</th>
       <th>Win Ratio</th>
-      <th>Ships Sunk</th>
+      <th>Shots Missed</th>
+      <th>Shots Landed</th>
       <th>Hit Ratio</th>
       <th>Powers Used</th>
     </tr>
-  </table>
-</div>
-
-<div id="classic" class="inv">
-  <table class="table">
+    {% for i in modern %}
     <tr>
-      <th>Games Played</th>
-      <th>Games Won</th>
-      <th>Win Ratio</th>
-      <th>Ships Sunk</th>
-      <th>Hit Ratio</th>
+      <td>{{ i[0] }}</td>
+      <td>{{ i[1] }}</td>
+      <td>{{ i[2] }}</td>
+      <td>{{ i[3] }}</td>
+      <td>{{ i[2] / i[1] }}</td>
+      <td>{{ i[4] }}</td>
+      <td>{{ i[5] }}</td>
+      <td>{{ i[5] / (i[4] + i[5]) }}</td>
+      <td>{{ i[6] }}</td>
     </tr>
-  </table>
-</div>
-
-<div id="modern" class="inv">
-  <table class="table">
-    <tr>
-      <th>Games Played</th>
-      <th>Games Won</th>
-      <th>Win Ratio</th>
-      <th>Ships Sunk</th>
-      <th>Hit Ratio</th>
-      <th>Powers Used</th>
-    </tr>
+    {% endfor %}
   </table>
 </div>
 
