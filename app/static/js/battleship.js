@@ -3,12 +3,12 @@ class Boat{
     hitLocations = [];
     isSunk = false;
     hp;
-
+    
     constructor(locations, hp) {
         this.locations = locations;
         this.hp = hp;
     }
-
+    
     registerHit(pointX, pointY) {
         this.hitLocations.push((pointX, pointY));
         this.hp -= 1;
@@ -22,11 +22,11 @@ class Field{
     hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
     field;
     setupDone = false;
-
+    
     constructor(field) {
         this.field = field;
     }
-
+    
     registerHit(pointX, pointY) {
         this.hitLocations.push((pointX, pointY));
         if (this.field[pointX][pointY]) {
@@ -54,7 +54,7 @@ function renderGrid() {
         context.lineTo(i, canvas.offsetHeight);
         context.stroke();
     }
-
+    
     for (let i = canvas.offsetHeight / 10; i < canvas.offsetHeight; i += canvas.offsetHeight / 10){
         context.beginPath();
         context.moveTo(0, i);
@@ -65,7 +65,7 @@ function renderGrid() {
 
 function renderBoats() {
     context.fillStyle = "blue";
-
+    
     for (let i = 0; i < currentField.field.length; i++){
         for (let v = 0; v < currentField.field[i].length; v++){
             if (currentField.field[i][v] instanceof Boat) {
@@ -77,7 +77,7 @@ function renderBoats() {
 
 function renderHits() {
     context.fillStyle = "red";
-
+    
     for (let i = 0; i < currentField.hitLocations.length; i++){
         for (let v = 0; v < currentField.hitLocations[i].length; v++){
             if (currentField.hitLocations[i][v]) {
@@ -120,16 +120,18 @@ function renderBoard() {
 }
 
 function readClickStart(e) {
-    drag = true;
-    document.body.style.cursor = 'move';
-    toMoveBoatX = getGridX(e);
-    toMoveBoatY = getGridY(e);
-    // console.log(getGridX(e), getGridY(e));
+    if (!currentField.setupDone) {
+        drag = true;
+        document.body.style.cursor = 'move';
+        toMoveBoatX = getGridX(e);
+        toMoveBoatY = getGridY(e);
+        // console.log(getGridX(e), getGridY(e));
+    }
 }
 
 function readHoverCoordinate(e) {
     // console.log(getGridX(e), getGridY(e));
-    if (0 <= getGridY(e) && getGridY(e) < 10 && 0 <= getGridX(e) && getGridX(e) < 10 && currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
+    if (!currentField.setupDone && 0 <= getGridY(e) && getGridY(e) < 10 && 0 <= getGridX(e) && getGridX(e) < 10 && currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
         document.body.style.cursor = 'move';
     }
     else if (!drag){
@@ -162,6 +164,7 @@ function passTurn() {
 function startButtonFunc() {
     if (currentPlayer == 2 && !fieldPlayer2.setupDone) {
         fieldPlayer2.setupDone = true;
+        startButton.style.display = "none"
     }
     if (!fieldPlayer2.setupDone) {
         player1EndSetup();
