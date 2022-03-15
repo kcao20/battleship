@@ -89,3 +89,9 @@ andyL -- 2022-03-14 09:26
 
 Two boards now work
 Added capability to pass turn
+
+andyL -- 2022-03-15 09:39
+
+Rendering two boards now with capability to hide things as needed
+Passing turn now works
+Fix issue where player could fire at a ship during setup
