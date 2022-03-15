@@ -4,22 +4,64 @@
 {{ super() }}
 {% endblock %}
 {% block content %}
-<form>
-  <select class="form-select" id="dataType" name="dataType">
-    <option value="classic-top">Classic Leaderboard</option>
-    <option value="modern-top">Modern Leaderboard</option>
-    <option value="classic">Classic Stats</option>
-    <option value="modern">Modern Stats</option>
-  </select>
-</form>
-<table class="table">
-  <tr>
-    <th>Games Played</th>
-    <th>Games Won</th>
-    <th>Win Ratio</th>
-    <th>Ships Sunk</th>
-    <th>Hit Ratio</th>
-    <th>Powers Used</th>
-  </tr>
-</table>
+<select class="form-select" id="dataType" name="dataType">
+  <option value="classic-top">Classic Leaderboard</option>
+  <option value="modern-top">Modern Leaderboard</option>
+  <option value="classic">Classic Stats</option>
+  <option value="modern">Modern Stats</option>
+</select>
+
+<div id="classic-top" class="inv">
+  <table class="table">
+    <tr>
+      <th>Username</th>
+      <th>Games Played</th>
+      <th>Games Won</th>
+      <th>Win Ratio</th>
+      <th>Ships Sunk</th>
+      <th>Hit Ratio</th>
+    </tr>
+  </table>
+</div>
+
+<div id="modern-top" class="inv">
+  <table class="table">
+    <tr>
+      <th>Username</th>
+      <th>Games Played</th>
+      <th>Games Won</th>
+      <th>Win Ratio</th>
+      <th>Ships Sunk</th>
+      <th>Hit Ratio</th>
+      <th>Powers Used</th>
+    </tr>
+  </table>
+</div>
+
+<div id="classic" class="inv">
+  <table class="table">
+    <tr>
+      <th>Games Played</th>
+      <th>Games Won</th>
+      <th>Win Ratio</th>
+      <th>Ships Sunk</th>
+      <th>Hit Ratio</th>
+    </tr>
+  </table>
+</div>
+
+<div id="modern" class="inv">
+  <table class="table">
+    <tr>
+      <th>Games Played</th>
+      <th>Games Won</th>
+      <th>Win Ratio</th>
+      <th>Ships Sunk</th>
+      <th>Hit Ratio</th>
+      <th>Powers Used</th>
+    </tr>
+  </table>
+</div>
+
+<script src="/static/js/leaderboard.js"></script>
 {% endblock %}
