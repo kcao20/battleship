@@ -1,0 +1,22 @@
+{% extends "template.html" %}
+{% block title %}Home{% endblock %}
+{% block head%}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<style>
+  .important {
+    color: #336699;
+  }
+  #board {
+    border: 1px solid black;
+  }
+</style>
+
+<div id="board" style="display: grid; height: 500px; width: 500px; grid-template-columns: repeat(10, 1fr);  grid-template-rows: repeat(10, 1fr);">
+</div>
+
+<input type="button" id="start" value="Start"></input>
+
+<script src="/static/js/hmm.js"></script>
+{% endblock %}

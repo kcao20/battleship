@@ -12,6 +12,9 @@ def index():
 def leaderboard():
     return render_template("leaderboard.html")
 
+@app.route("/play")
+def playground():
+    return render_template("playground.html")
 
 if __name__ == "__main__":
     app.debug = True
