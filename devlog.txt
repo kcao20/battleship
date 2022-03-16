@@ -102,3 +102,7 @@ Align actual database columns to html.
 Pass data from database to table
 Causes division by zero error depending on database entries
 Don't display any stats if they have any zeroes
+
+kevinC -- 2022-03-16 11:00
+
+Display two boards in one row
