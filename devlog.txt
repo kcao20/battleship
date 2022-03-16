@@ -110,3 +110,8 @@ Added checks for duplicate users within leaderboard
 kevinC -- 2022-03-16 11:00
 
 Display two boards in one row
+
+andyL -- 2022-03-16 09:26
+
+moved some functions over to ooped functions
+made code to do end of game logic
