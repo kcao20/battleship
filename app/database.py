@@ -149,7 +149,7 @@ def add_statsM(username,win,shotsHit,shotsMissed,powersUsed):
 	db.close()
 	return True
 
-add_userM("test")
-add_userC("test")
-add_statsC("test",True,3,7)
-add_userM("test")
+#add_userM("test")
+#add_userC("test")
+#add_statsC("test",True,3,7)
+#add_userM("test")

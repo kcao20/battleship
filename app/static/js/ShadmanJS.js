@@ -1,4 +1,14 @@
-import { shuffleArray } from "utils";
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+    return array;
+}
 
 class Game {
 
@@ -30,6 +40,8 @@ class Game {
         this.player2AttackBoard = this.generateEmptyBoard();
 
         console.log(shuffleArray([0, 1, 2, 3, 4]))
+
+        this.generateRandomDefaultBoard()
     }
 
     generateEmptyBoard() {
@@ -48,10 +60,23 @@ class Game {
         return board
     }
 
+    randomlySwapShipOrientations (ships) {
+        for (let i = 0; i < ships.length; i++) {
+
+            if (Math.random() > 0.5) {
+                const temp = ships[i][0]
+                ships[i][0] = ships[i][1]
+                ships[i][1] = temp;
+            }
+        }
+        return ships;
+    }
+
     generateRandomDefaultBoard() {
         let board = this.generateEmptyBoard();
         let ships = [...this.defaultShips];
 
+        this.randomlySwapShipOrientations(ships);
 
     }
 }
