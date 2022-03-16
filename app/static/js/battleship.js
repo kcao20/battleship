@@ -48,6 +48,7 @@ class Field{
 let currentBoard = document.getElementById("currentBoard");
 let currentBoardContext = currentBoard.getContext("2d");
 let otherBoard = document.getElementById("otherBoard");
+let label = document.getElementsByClassName("label");
 let otherBoardContext = otherBoard.getContext("2d");
 let drag = false;
 let toMoveBoatX = -1;
@@ -208,8 +209,11 @@ function passTurn() {
 function startButtonFunc() {
     if (currentPlayer == 2 && !fieldPlayer2.setupDone) {
         fieldPlayer2.setupDone = true;
-        startButton.style.display = "none"
-        otherBoard.style.display = "inline"
+        startButton.style.display = "none";
+        otherBoard.style.display = "inline";
+        for (let i = 0; i < label.length; i++) {
+            label[i].style.display = "inline";
+          }
         renderEnemyBoard(otherBoardContext, otherField);
     }
     if (!fieldPlayer2.setupDone) {
@@ -220,11 +224,11 @@ function startButtonFunc() {
 }
 
 function gameStart(playerName) {
-    alert("Player "+playerName+", set up your field!");
+    player.innerHTML = "Player " + playerName + ", set up your field!"
 }
 
 function tellPlayerTurn(playerName) {
-    alert("Player "+playerName+", it's your turn!");
+    player.innerHTML = "It is player " + currentPlayer + "'s turn."
 }
 
 function renderEnemyBoard(ctx, boardToRender) {
