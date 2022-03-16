@@ -125,7 +125,7 @@ function readClicks(e) {
                 currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
             }
             passTurn();
-        }, 0)
+        }, 1000)
     }
 }
 
@@ -178,6 +178,15 @@ function passTurn() {
         otherField = fieldPlayer1;
         renderEnemyBoard(currentBoardContext, currentField);
         renderBoard(otherBoardContext, otherField);
+    }
+    if (otherField.hp == 0) {
+        if (currentPlayer == 1) {
+            alert("Player 2 wins!");
+            return;
+        } else {
+            alert("Player 1 wins!");
+            return;
+        }
     }
     tellPlayerTurn(String(currentPlayer));
 }
