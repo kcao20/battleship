@@ -1,11 +1,11 @@
 class Boat{
-
+    
     length;
     orientation;
-
+    
     x; 
     y;
-
+    
     locations;
     hitLocations = [];
     isSunk = false;
@@ -181,10 +181,24 @@ function passTurn() {
     }
     if (otherField.hp == 0) {
         if (currentPlayer == 1) {
-            alert("Player 2 wins!");
+            alert("Player 2 wins! Would you like to play again?");
+            fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            currentField = fieldPlayer1;
+            otherField = fieldPlayer2;
+            otherBoard.style.display = 'none';
+            startButton.style.display = 'inline';
+            renderBoard(currentBoardContext, currentField);
             return;
         } else {
-            alert("Player 1 wins!");
+            alert("Player 1 wins! Would you like to play again?");
+            fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            currentField = fieldPlayer1;
+            otherField = fieldPlayer2;
+            otherBoard.style.display = 'none';
+            startButton.style.display = 'inline';
+            renderBoard(currentBoardContext, currentField);
             return;
         }
     }
