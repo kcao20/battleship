@@ -102,3 +102,7 @@ Align actual database columns to html.
 Pass data from database to table
 Causes division by zero error depending on database entries
 Don't display any stats if they have any zeroes
+
+austinN -- 2022-03-16 08:55
+
+Added checks for duplicate users within leaderboard
