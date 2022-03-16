@@ -29,15 +29,19 @@ class Field{
     hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
     field;
     setupDone = false;
+    hp;
     
-    constructor(field) {
+    constructor(field, hp) {
         this.field = field;
+        this.hp = hp;
     }
     
     registerHit(pointX, pointY) {
-        if (this.field[pointX][pointY]) {
-            this.field[pointX][pointY].registerHit(pointX, pointY);
+        if (this.field[pointY][pointX] instanceof Boat) {
+            this.field[pointY][pointX].registerHit(pointX, pointY);
+            this.hp -= 1;
         }
+        this.hitLocations[pointY][pointX] = true;
     }
 }
 
@@ -51,8 +55,8 @@ let toMoveBoatY = -1;
 let startButton = document.getElementById("start");
 let currentPlayer = 1;
 
-let fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
-let fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
+let fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+let fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
 let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
 
@@ -114,7 +118,7 @@ function readClicks(e) {
         document.body.style.cursor = 'default';
         renderBoard(currentBoardContext, currentField);
     } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)] && currentField.setupDone){
-        currentField.hitLocations[getGridY(e)][getGridX(e)] = true;
+        currentField.registerHit(getGridX(e), getGridY(e));
         renderEnemyBoard(currentBoardContext, currentField);
         setTimeout(function () {
             if (currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
