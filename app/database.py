@@ -4,6 +4,7 @@ DB_FILE = "database.db"
 db = sqlite3.connect(DB_FILE)
 cur = db.cursor()
 
+
 cur.execute("""
 	CREATE TABLE IF NOT EXISTS usersClassic(
 		username TEXT,
@@ -13,14 +14,7 @@ cur.execute("""
 		shotsMissed INTEGER,
 		shotsLanded INTEGER
 		)""")
-	
-cur.execute("""
-	CREATE TABLE IF NOT EXISTS leaderboardClassic(
-		username TEXT,
-		winRatio REAL,
-		hitRatio REAL,
-		gamesPlayed INTEGER,
-		gamesWon INTEGER)""")
+
 
 cur.execute("""
 	CREATE TABLE IF NOT EXISTS usersModern(
@@ -32,15 +26,6 @@ cur.execute("""
 		shotsLanded INTEGER,
 		powersUsed INTEGER
 		)""")
-	
-cur.execute("""
-	CREATE TABLE IF NOT EXISTS leaderboardModern(
-		username TEXT,
-		winRatio REAL,
-		hitRatio REAL,
-		powersUsed INTEGER,
-		gamesPlayed INTEGER,
-		gamesWon INTEGER)""")
 
 db.commit()
 db.close()
@@ -49,7 +34,14 @@ def add_userC(username):
 	db = sqlite3.connect(DB_FILE)
 	c = db.cursor()
 	
-	c.execute("""INSERT INTO usersClassic(username,gamesplayed,gameswon,gameslost,shotsmissed,shotslanded) VALUES(?, ?, ?, ?, ?, ?)""", (username,0,0,0,0,0))
+	c.execute("SELECT * FROM usersClassic WHERE LOWER(username) = LOWER(?)", (username,))
+	check = c.fetchone()
+	
+	if check is not None:
+		return False
+		
+	else:
+		c.execute("""INSERT INTO usersClassic(username,gamesPlayed,gamesWon,gamesLost,shotsMissed,shotsLanded) VALUES(?, ?, ?, ?, ?, ?)""", (username,0,0,0,0,0))
 	db.commit()
 	db.close()
 	return True
@@ -63,8 +55,9 @@ def add_userM(username):
 	
 	if check is not None:
 		return False
-		
-	c.execute("""INSERT INTO usersModern(username,gamesplayed,gameswon,gameslost,shotsmissed,shotslanded,powersused) VALUES(?,?,?,?,?,?,?)""", (username,0,0,0,0,0,0))
+	
+	else:
+		c.execute("""INSERT INTO usersModern(username,gamesPlayed,gamesWon,gamesLost,shotsMissed,shotsLanded,powersUsed) VALUES(?,?,?,?,?,?,?)""", (username,0,0,0,0,0,0))
 	db.commit()
 	db.close()
 	return True
@@ -82,11 +75,11 @@ def add_statsC(username,win,shotsHit,shotsMissed):
 					WHERE username = ?""", (username,))
 		c.execute("""
 					UPDATE usersClassic
-						SET gameswon = gameswon + 1
+						SET gamesWon = gamesWon + 1
 					WHERE username = ?""", (username,))
 		c.execute("""
 					UPDATE usersClassic
-						SET shotslanded = shotslanded + ?
+						SET shotsLanded = shotsLanded + ?
 					WHERE username = ?""", (shotsHit,username))
 		c.execute("""
 					UPDATE usersClassic
@@ -103,7 +96,7 @@ def add_statsC(username,win,shotsHit,shotsMissed):
 					WHERE username = ?""", (username,))
 		c.execute("""
 					UPDATE usersClassic
-						SET shotslanded = shotslanded + ?
+						SET shotsLanded = shotsLanded + ?
 					WHERE username = ?""", (shotsHit,username))
 		c.execute("""
 					UPDATE usersClassic
@@ -113,7 +106,7 @@ def add_statsC(username,win,shotsHit,shotsMissed):
 	db.close()
 	return True
 
-def add_statsC(username,win,shotsHit,shotsMissed,powersUsed):
+def add_statsM(username,win,shotsHit,shotsMissed,powersUsed):
 	db = sqlite3.connect(DB_FILE)
 	c = db.cursor()
 	
@@ -139,10 +132,19 @@ def add_statsC(username,win,shotsHit,shotsMissed,powersUsed):
 		c.execute("""
 					UPDATE usersClassic
 						SET gamesPlayed = gamesPlayed + 1
+					WHERE username = ?""", (username,))
+		c.execute("""
+					UPDATE usersClassic
 						SET gamesLost = gamesLost + 1
+					WHERE username = ?""", (username,))
+		c.execute("""
+					UPDATE usersClassic
 						SET shotsLanded = shotsLanded + ?
-						SET shotsMissed = shotsMissed + ? 
-					WHERE username = ?""", (shotsHit, shotsMissed, username,))
+					WHERE username = ?""", (shotsHit,username))
+		c.execute("""
+					UPDATE usersClassic
+						SET shotsMissed = shotsMissed + ?
+					WHERE username = ?""", (shotsMissed,username))
 	db.commit()
 	db.close()
 	return True
@@ -150,3 +152,4 @@ def add_statsC(username,win,shotsHit,shotsMissed,powersUsed):
 #add_userM("test")
 #add_userC("test")
 #add_statsC("test",True,3,7)
+#add_userM("test")

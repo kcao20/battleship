@@ -10,12 +10,12 @@ class Boat{
     hitLocations = [];
     isSunk = false;
     hp;
-
+    
     constructor(locations, hp) {
         this.locations = locations;
         this.hp = hp;
     }
-
+    
     registerHit(pointX, pointY) {
         this.hitLocations.push((pointX, pointY));
         this.hp -= 1;
@@ -29,21 +29,22 @@ class Field{
     hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
     field;
     setupDone = false;
-
+    
     constructor(field) {
         this.field = field;
     }
-
+    
     registerHit(pointX, pointY) {
-        this.hitLocations.push((pointX, pointY));
         if (this.field[pointX][pointY]) {
             this.field[pointX][pointY].registerHit(pointX, pointY);
         }
     }
 }
 
-let canvas = document.getElementById("board");
-let context = canvas.getContext("2d");
+let currentBoard = document.getElementById("currentBoard");
+let currentBoardContext = currentBoard.getContext("2d");
+let otherBoard = document.getElementById("otherBoard");
+let otherBoardContext = otherBoard.getContext("2d");
 let drag = false;
 let toMoveBoatX = -1;
 let toMoveBoatY = -1;
@@ -53,55 +54,56 @@ let currentPlayer = 1;
 let fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
 let fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
 let currentField = fieldPlayer1;
+let otherField = fieldPlayer2;
 
-function renderGrid() {
-    for (let i = canvas.offsetWidth / 10; i < canvas.offsetWidth; i += canvas.offsetWidth / 10){
-        context.beginPath();
-        context.moveTo(i, 0);
-        context.lineTo(i, canvas.offsetHeight);
-        context.stroke();
+function renderGrid(ctx) {
+    for (let i = currentBoard.offsetWidth / 10; i < currentBoard.offsetWidth; i += currentBoard.offsetWidth / 10){
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, currentBoard.offsetHeight);
+        ctx.stroke();
     }
-
-    for (let i = canvas.offsetHeight / 10; i < canvas.offsetHeight; i += canvas.offsetHeight / 10){
-        context.beginPath();
-        context.moveTo(0, i);
-        context.lineTo(canvas.offsetWidth, i);
-        context.stroke();
+    
+    for (let i = currentBoard.offsetHeight / 10; i < currentBoard.offsetHeight; i += currentBoard.offsetHeight / 10){
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.lineTo(currentBoard.offsetWidth, i);
+        ctx.stroke();
     }
 }
 
-function renderBoats() {
-    context.fillStyle = "blue";
-
-    for (let i = 0; i < currentField.field.length; i++){
-        for (let v = 0; v < currentField.field[i].length; v++){
-            if (currentField.field[i][v] instanceof Boat) {
-                context.fillRect(v * canvas.offsetWidth / 10, i * canvas.offsetHeight / 10, canvas.offsetWidth / 10, canvas.offsetHeight / 10);
+function renderBoats(ctx, boardToRender) {
+    ctx.fillStyle = "blue";
+    
+    for (let i = 0; i < boardToRender.field.length; i++){
+        for (let v = 0; v < boardToRender.field[i].length; v++){
+            if (boardToRender.field[i][v] instanceof Boat) {
+                ctx.fillRect(v * currentBoard.offsetWidth / 10, i * currentBoard.offsetHeight / 10, currentBoard.offsetWidth / 10, currentBoard.offsetHeight / 10);
             }
         }
     }
 }
 
-function renderHits() {
-    context.fillStyle = "red";
-
-    for (let i = 0; i < currentField.hitLocations.length; i++){
-        for (let v = 0; v < currentField.hitLocations[i].length; v++){
-            if (currentField.hitLocations[i][v]) {
-                context.fillRect(v * canvas.offsetWidth / 10, i * canvas.offsetHeight / 10, canvas.offsetWidth / 10, canvas.offsetHeight / 10);
+function renderHits(ctx, boardToRender) {
+    ctx.fillStyle = "red";
+    
+    for (let i = 0; i < boardToRender.hitLocations.length; i++){
+        for (let v = 0; v < boardToRender.hitLocations[i].length; v++){
+            if (boardToRender.hitLocations[i][v]) {
+                ctx.fillRect(v * currentBoard.offsetWidth / 10, i * currentBoard.offsetHeight / 10, currentBoard.offsetWidth / 10, currentBoard.offsetHeight / 10);
             }
         }
     }
 }
 
 function getGridX(e) {
-    const rect = canvas.getBoundingClientRect();
-    return Math.floor((e.clientX - rect.left) / (canvas.offsetWidth / 10));
+    const rect = currentBoard.getBoundingClientRect();
+    return Math.floor((e.clientX - rect.left) / (currentBoard.offsetWidth / 10));
 }
 
 function getGridY(e) {
-    const rect = canvas.getBoundingClientRect();
-    return Math.floor((e.clientY - rect.top) / (canvas.offsetHeight / 10));
+    const rect = currentBoard.getBoundingClientRect();
+    return Math.floor((e.clientY - rect.top) / (currentBoard.offsetHeight / 10));
 }
 
 function readClicks(e) {
@@ -110,33 +112,39 @@ function readClicks(e) {
         currentField.field[getGridY(e)][getGridX(e)] = currentField.field[toMoveBoatY][toMoveBoatX];
         currentField.field[toMoveBoatY][toMoveBoatX] = null;
         document.body.style.cursor = 'default';
-    } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)]){
+        renderBoard(currentBoardContext, currentField);
+    } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)] && currentField.setupDone){
         currentField.hitLocations[getGridY(e)][getGridX(e)] = true;
-        if (currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
-            currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
-        }
+        renderEnemyBoard(currentBoardContext, currentField);
+        setTimeout(function () {
+            if (currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
+                currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
+            }
+            passTurn();
+        }, 0)
     }
-    renderBoard();
 }
 
-function renderBoard() {
-    context.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
-    renderBoats();
-    renderHits();
-    renderGrid();
+function renderBoard(ctx, boardToRender) {
+    ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
+    renderBoats(ctx, boardToRender);
+    renderHits(ctx, boardToRender);
+    renderGrid(ctx);
 }
 
 function readClickStart(e) {
-    drag = true;
-    document.body.style.cursor = 'move';
-    toMoveBoatX = getGridX(e);
-    toMoveBoatY = getGridY(e);
-    // console.log(getGridX(e), getGridY(e));
+    if (!currentField.setupDone) {
+        drag = true;
+        document.body.style.cursor = 'move';
+        toMoveBoatX = getGridX(e);
+        toMoveBoatY = getGridY(e);
+        // console.log(getGridX(e), getGridY(e));
+    }
 }
 
 function readHoverCoordinate(e) {
     // console.log(getGridX(e), getGridY(e));
-    if (0 <= getGridY(e) && getGridY(e) < 10 && 0 <= getGridX(e) && getGridX(e) < 10 && currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
+    if (!currentField.setupDone && 0 <= getGridY(e) && getGridY(e) < 10 && 0 <= getGridX(e) && getGridX(e) < 10 && currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
         document.body.style.cursor = 'move';
     }
     else if (!drag){
@@ -149,7 +157,7 @@ function player1EndSetup() {
     gameStart("2");
     currentField = fieldPlayer2;
     currentPlayer = 2;
-    renderBoard();
+    renderBoard(currentBoardContext, currentField);
 }
 
 function passTurn() {
@@ -157,11 +165,15 @@ function passTurn() {
     if (currentPlayer == 2){
         currentPlayer = 1;
         currentField = fieldPlayer1;
-        renderBoard();
+        otherField = fieldPlayer2;
+        renderEnemyBoard(currentBoardContext, currentField);
+        renderBoard(otherBoardContext, otherField);
     } else {
         currentPlayer = 2;
         currentField = fieldPlayer2;
-        renderBoard();
+        otherField = fieldPlayer1;
+        renderEnemyBoard(currentBoardContext, currentField);
+        renderBoard(otherBoardContext, otherField);
     }
     tellPlayerTurn(String(currentPlayer));
 }
@@ -169,6 +181,9 @@ function passTurn() {
 function startButtonFunc() {
     if (currentPlayer == 2 && !fieldPlayer2.setupDone) {
         fieldPlayer2.setupDone = true;
+        startButton.style.display = "none"
+        otherBoard.style.display = "inline"
+        renderEnemyBoard(otherBoardContext, otherField);
     }
     if (!fieldPlayer2.setupDone) {
         player1EndSetup();
@@ -185,10 +200,16 @@ function tellPlayerTurn(playerName) {
     alert("Player "+playerName+", it's your turn!");
 }
 
-renderBoard();
+function renderEnemyBoard(ctx, boardToRender) {
+    ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
+    renderHits(ctx, boardToRender);
+    renderGrid(ctx);
+}
+
+renderBoard(currentBoardContext, currentField);
 gameStart("1");
 
-canvas.addEventListener('click', readClicks);
-canvas.addEventListener('mousedown', readClickStart);
-canvas.addEventListener('mousemove', readHoverCoordinate);
+currentBoard.addEventListener('click', readClicks);
+currentBoard.addEventListener('mousedown', readClickStart);
+currentBoard.addEventListener('mousemove', readHoverCoordinate);
 startButton.addEventListener('click', startButtonFunc);

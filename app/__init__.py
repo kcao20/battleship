@@ -1,6 +1,11 @@
 from flask import Flask, render_template
+import sqlite3
 
 app = Flask(__name__)
+
+DB_FILE = "database.db"
+db = sqlite3.connect(DB_FILE, check_same_thread=False)
+cur = db.cursor()
 
 
 @app.route("/")
@@ -10,7 +15,11 @@ def index():
 
 @app.route("/leaderboard")
 def leaderboard():
-    return render_template("leaderboard.html")
+    cur.execute("SELECT username, gamesPlayed, gamesWon, gamesLost, shotsMissed, shotsLanded FROM usersClassic")
+    classicTable = cur.fetchall()
+    cur.execute("SELECT username, gamesPlayed, gamesWon, gamesLost, shotsMissed, shotsLanded, powersUsed FROM usersModern")
+    modernTable = cur.fetchall()
+    return render_template("leaderboard.html", classic=classicTable, modern=modernTable)
 
 @app.route("/play")
 def playground():
