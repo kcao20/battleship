@@ -1,3 +1,43 @@
+class Game {
+
+    // TODO: Maybe create a player class to make things cleaner?
+
+    // boats players can places
+    defaultBoatsToPlace = [5, 4, 3, 2]
+    player1BoatsToPlace = [...this.defaultBoatsToPlace];
+    player1BoatsToPlace = [...this.defaultBoatsToPlace];
+
+    // boats
+    player1Boats = [];
+    player2Boats = [];
+
+    // when all boats are placed
+    player1CanStart = false;
+    player2CanStart = false; 
+
+    currentBoard = document.getElementById("currentBoard");
+    currentBoardContext = currentBoard.getContext("2d");
+
+    otherBoard = document.getElementById("otherBoard");
+    otherBoardContext = otherBoard.getContext("2d");
+
+    drag = false;
+    toMoveBoatX = -1;
+    toMoveBoatY = -1;
+    
+    startButton = document.getElementById("start");
+    
+    currentPlayer = 1;
+    
+    // to change
+    player1Board = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
+    player2Board = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
+    
+    currentField = player1Board;
+    otherField = player2Board;
+}
+
+
 class Boat{
 
     length;
@@ -25,36 +65,39 @@ class Boat{
     }
 }
 
-class Field{
-    hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
-    field;
+class Board {
+    board; // TODO: 2d array {hit: boolean, ship: number that maps to boat array, }
     setupDone = false;
     
-    constructor(field) {
-        this.field = field;
+    constructor(width, height) {
+        this.board = Board.generateEmptyBoard(width, height);
     }
     
     registerHit(pointX, pointY) {
-        if (this.field[pointX][pointY]) {
-            this.field[pointX][pointY].registerHit(pointX, pointY);
+        if (this.board[pointX][pointY] && !this.board[pointX][pointY].hit) {
+            this.board[pointX][pointY] = {...this.board[pointX][pointY], hit: true};
+            
+            const boat = this.board[pointX][pointY];
+            boat.registerHit(pointX, pointY);
         }
     }
+
+    static generateEmptyBoard(width, height) {
+        let board = [];
+
+        for (let i = 0; i < height; i++) {
+            let col = [];
+            
+            for (let j = 0; j < width; j++) {
+                col[j] = null;
+            }
+
+            board[i] = col;
+        }
+
+        return board
+    }
 }
-
-let currentBoard = document.getElementById("currentBoard");
-let currentBoardContext = currentBoard.getContext("2d");
-let otherBoard = document.getElementById("otherBoard");
-let otherBoardContext = otherBoard.getContext("2d");
-let drag = false;
-let toMoveBoatX = -1;
-let toMoveBoatY = -1;
-let startButton = document.getElementById("start");
-let currentPlayer = 1;
-
-let fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
-let fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
-let currentField = fieldPlayer1;
-let otherField = fieldPlayer2;
 
 function renderGrid(ctx) {
     for (let i = currentBoard.offsetWidth / 10; i < currentBoard.offsetWidth; i += currentBoard.offsetWidth / 10){
