@@ -209,7 +209,7 @@ function passTurn() {
         for (let i = 0; i < label.length; i++) {
             label[i].style.display = "none";
         }
-        return;
+        currentPlayer = 1;
     }
     tellPlayerTurn(String(currentPlayer));
 }
