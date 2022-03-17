@@ -40,8 +40,10 @@ class Field{
         if (this.field[pointY][pointX] instanceof Boat) {
             this.field[pointY][pointX].registerHit(pointX, pointY);
             this.hp -= 1;
+            this.hitLocations[pointY][pointX] = 1;
+        } else {
+            this.hitLocations[pointY][pointX] = 2;
         }
-        this.hitLocations[pointY][pointX] = true;
     }
 }
 
@@ -91,11 +93,13 @@ function renderBoats(ctx, boardToRender) {
 }
 
 function renderHits(ctx, boardToRender) {
-    ctx.fillStyle = "red";
-    
     for (let i = 0; i < boardToRender.hitLocations.length; i++){
         for (let v = 0; v < boardToRender.hitLocations[i].length; v++){
-            if (boardToRender.hitLocations[i][v]) {
+            if (boardToRender.hitLocations[i][v] == 1) {
+                ctx.fillStyle = "red";
+                ctx.fillRect(v * currentBoard.offsetWidth / 10, i * currentBoard.offsetHeight / 10, currentBoard.offsetWidth / 10, currentBoard.offsetHeight / 10);
+            } else if (boardToRender.hitLocations[i][v] == 2) {
+                ctx.fillStyle = "#c2c3c7";
                 ctx.fillRect(v * currentBoard.offsetWidth / 10, i * currentBoard.offsetHeight / 10, currentBoard.offsetWidth / 10, currentBoard.offsetHeight / 10);
             }
         }
