@@ -40,8 +40,10 @@ class Field{
         if (this.field[pointY][pointX] instanceof Boat) {
             this.field[pointY][pointX].registerHit(pointX, pointY);
             this.hp -= 1;
+            this.hitLocations[pointY][pointX] = 1;
+        } else {
+            this.hitLocations[pointY][pointX] = 2;
         }
-        this.hitLocations[pointY][pointX] = true;
     }
 }
 
@@ -60,6 +62,7 @@ let fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)
 let fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
 let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
+let boardClicked = false;
 
 function renderGrid(ctx) {
     for (let i = currentBoard.offsetWidth / 10; i < currentBoard.offsetWidth; i += currentBoard.offsetWidth / 10){
@@ -90,11 +93,13 @@ function renderBoats(ctx, boardToRender) {
 }
 
 function renderHits(ctx, boardToRender) {
-    ctx.fillStyle = "red";
-    
     for (let i = 0; i < boardToRender.hitLocations.length; i++){
         for (let v = 0; v < boardToRender.hitLocations[i].length; v++){
-            if (boardToRender.hitLocations[i][v]) {
+            if (boardToRender.hitLocations[i][v] == 1) {
+                ctx.fillStyle = "red";
+                ctx.fillRect(v * currentBoard.offsetWidth / 10, i * currentBoard.offsetHeight / 10, currentBoard.offsetWidth / 10, currentBoard.offsetHeight / 10);
+            } else if (boardToRender.hitLocations[i][v] == 2) {
+                ctx.fillStyle = "#c2c3c7";
                 ctx.fillRect(v * currentBoard.offsetWidth / 10, i * currentBoard.offsetHeight / 10, currentBoard.offsetWidth / 10, currentBoard.offsetHeight / 10);
             }
         }
@@ -118,7 +123,8 @@ function readClicks(e) {
         currentField.field[toMoveBoatY][toMoveBoatX] = null;
         document.body.style.cursor = 'default';
         renderBoard(currentBoardContext, currentField);
-    } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)] && currentField.setupDone){
+    } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)] && currentField.setupDone && !boardClicked) {
+        boardClicked = true;
         currentField.registerHit(getGridX(e), getGridY(e));
         renderEnemyBoard(currentBoardContext, currentField);
         setTimeout(function () {
@@ -126,6 +132,7 @@ function readClicks(e) {
                 currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
             }
             passTurn();
+            boardClicked = false;
         }, 1000)
     }
 }
@@ -213,7 +220,10 @@ function startButtonFunc() {
         otherBoard.style.display = "inline";
         for (let i = 0; i < label.length; i++) {
             label[i].style.display = "inline";
-          }
+        }
+        otherField = fieldPlayer2
+        currentField = fieldPlayer1
+        renderBoard(currentBoardContext, currentField);
         renderEnemyBoard(otherBoardContext, otherField);
     }
     if (!fieldPlayer2.setupDone) {
