@@ -60,6 +60,7 @@ let fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)
 let fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
 let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
+let boardClicked = false;
 
 function renderGrid(ctx) {
     for (let i = currentBoard.offsetWidth / 10; i < currentBoard.offsetWidth; i += currentBoard.offsetWidth / 10){
@@ -118,7 +119,8 @@ function readClicks(e) {
         currentField.field[toMoveBoatY][toMoveBoatX] = null;
         document.body.style.cursor = 'default';
         renderBoard(currentBoardContext, currentField);
-    } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)] && currentField.setupDone){
+    } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)] && currentField.setupDone && !boardClicked) {
+        boardClicked = true;
         currentField.registerHit(getGridX(e), getGridY(e));
         renderEnemyBoard(currentBoardContext, currentField);
         setTimeout(function () {
@@ -126,6 +128,7 @@ function readClicks(e) {
                 currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
             }
             passTurn();
+            boardClicked = false;
         }, 1000)
     }
 }
@@ -213,7 +216,10 @@ function startButtonFunc() {
         otherBoard.style.display = "inline";
         for (let i = 0; i < label.length; i++) {
             label[i].style.display = "inline";
-          }
+        }
+        otherField = fieldPlayer2
+        currentField = fieldPlayer1
+        renderBoard(currentBoardContext, currentField);
         renderEnemyBoard(otherBoardContext, otherField);
     }
     if (!fieldPlayer2.setupDone) {
