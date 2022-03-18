@@ -120,6 +120,11 @@ kevinC -- 2022-03-17 09:26
 
 change ratio to percentage in leaderboard
 
+austinN -- 2022-03-18 09:23
+
+Added player class to js
+Started form to take a player's username
+
 kevinC -- 2022-03-18 11:12
 
 fix launch instructions for digitalocean
