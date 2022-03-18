@@ -172,20 +172,34 @@ function player1EndSetup() {
     renderBoard(currentBoardContext, currentField);
 }
 
+function clearBoardBeforeAnything(_callback) {
+    clearBoard(currentBoardContext);
+    clearBoard(otherBoardContext);
+    _callback();
+}
+
 function passTurn() {
     currentField.setupDone = true;
     if (currentPlayer == 2){
         currentPlayer = 1;
         currentField = fieldPlayer1;
         otherField = fieldPlayer2;
-        renderEnemyBoard(currentBoardContext, currentField);
-        renderBoard(otherBoardContext, otherField);
+        clearBoardBeforeAnything(function () {
+            alert("dn");
+            renderEnemyBoard(currentBoardContext, currentField);
+            renderBoard(otherBoardContext, otherField);
+        })
     } else {
         currentPlayer = 2;
         currentField = fieldPlayer2;
         otherField = fieldPlayer1;
-        renderEnemyBoard(currentBoardContext, currentField);
-        renderBoard(otherBoardContext, otherField);
+        clearBoard(currentBoardContext);
+        clearBoard(otherBoardContext);
+        clearBoardBeforeAnything(function () {
+            alert("dn");
+            renderEnemyBoard(currentBoardContext, currentField);
+            renderBoard(otherBoardContext, otherField);
+        })
     }
     if (otherField.hp == 0) {
         if (currentPlayer == 1) {
@@ -246,6 +260,10 @@ function renderEnemyBoard(ctx, boardToRender) {
     ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
     renderHits(ctx, boardToRender);
     renderGrid(ctx);
+}
+
+function clearBoard(ctx) {
+    ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
 }
 
 renderBoard(currentBoardContext, currentField);
