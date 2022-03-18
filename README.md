@@ -51,12 +51,13 @@ cd /var/www
 sudo mkdir FlaskApp
 sudo chown <username> FlaskApp
 sudo chgrp -R www-data FlaskApp
+chmod g+s FlaskApp
 cd FlaskApp
 ```
 ### 3. Clone the repository
 ```
 git clone https://github.com/kcao20/battleship.git
-mkdir FlaskApp && cp -r battleship/app/* FlaskApp
+mkdir FlaskApp && cp -r battleship/app/* FlaskApp && cp battleship/requirements.txt FlaskApp
 ```
 
 ### 4. Create and activate a virtual enviroment:
@@ -102,7 +103,20 @@ nano flaskapp.wsgi
 Add:
 ```
 #!/usr/bin/python
+python_home = '/var/www/FlaskApp/venv'
+
 import sys
+import site
+
+# Calculate path to site-packages directory.
+
+python_version = '.'.join(map(str, sys.version_info[:2]))
+site_packages = python_home + '/lib/python%s/site-packages' % python_version
+
+# Add the site-packages directory.
+
+site.addsitedir(site_packages)
+
 import logging
 logging.basicConfig(stream=sys.stderr)
 sys.path.insert(0,"/var/www/FlaskApp/")
