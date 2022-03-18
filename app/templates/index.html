@@ -26,12 +26,26 @@
       <h1 class="label" style="display: none">Enemy Board</h1>
     </div>
     <div class="col align-self-center text-center">
+    	<form id="p1Name">
+    		<label for="p1User">Player 1 Username</label>
+   	 		<input type="text" class="form-control" id="p1Name" aria-describedby="emailHelp" placeholder="Enter a username">
+  		</form>
       <h3 id="player"></h3>
       <h3 id="energy">You currently have {{ energy }} energy</h3>
       <input type="button" id="start" value="Start"></input>
       <input type="button" id="confirmShot" value="Confirm Shot"></input>
     </div>
   </div>
+  
+  <div>
+
+  </div>
+  
+  <div>
+  	<form id="p2Name">
+  	</form>
+  </div>  
+  
   </div>
   
   <script src="/static/js/battleship.js"></script>

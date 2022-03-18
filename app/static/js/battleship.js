@@ -47,6 +47,27 @@ class Field{
     }
 }
 
+class Player{
+	username;
+	hits = 0;
+	misses = 0;
+	isWon;
+	
+	constructor(username){
+		this.username = username;
+	}
+
+	gameStatus(win){
+		if (win){
+			isWon=true;
+		}
+		else {
+			isWon=false;
+		}
+	}
+
+}
+
 let currentBoard = document.getElementById("currentBoard");
 let currentBoardContext = currentBoard.getContext("2d");
 let otherBoard = document.getElementById("otherBoard");
@@ -63,6 +84,12 @@ let fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)
 let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
 let boardClicked = false;
+
+// var p1 = document.getElementById("p1Name");
+// var p2 = document.getElementById("p2Name");
+// let player1 = new Player;
+// let player2 = new Player;
+
 
 function renderGrid(ctx) {
     for (let i = currentBoard.offsetWidth / 10; i < currentBoard.offsetWidth; i += currentBoard.offsetWidth / 10){
@@ -203,7 +230,7 @@ function passTurn() {
             otherField = fieldPlayer2;
         }
         otherBoard.style.display = 'none';
-        startButton.style.display = 'inline';
+        start.style.display = 'inline';
         renderBoard(currentBoardContext, currentField);
         renderBoard(otherBoardContext, otherField);
         for (let i = 0; i < label.length; i++) {
