@@ -25,8 +25,21 @@ class Boat{
     }
 }
 
-class Player {
+class ShadmanPlayer {
+
+    board; // 2D array of either null or {hit: boolean, shipID: number}
+    boardElement;
     
+    constructor () {} // Use builder pattern?
+
+    setBoardElement(boardElement) {
+        this.boardElement = boardElement;
+        return this; // will allow chaining
+    }
+
+    getBoardContext() {
+        return boardElement.getContext("2d");
+    }
 }
 
 class Board {
