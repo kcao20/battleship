@@ -142,6 +142,7 @@ let drag = false;
 let toMoveBoatX = -1;
 let toMoveBoatY = -1;
 let startButton = document.getElementById("start");
+let passTurnButton = document.getElementById("passTurn");
 let currentPlayer = 1;
 
 let fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
@@ -224,7 +225,6 @@ function readClicks(e) {
                 currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
             }
             passTurn();
-            boardClicked = false;
         }, 1000)
     }
 }
@@ -264,34 +264,26 @@ function player1EndSetup() {
     renderBoard(currentBoardContext, currentField);
 }
 
-function clearBoardBeforeAnything(_callback) {
-    clearBoard(currentBoardContext);
-    clearBoard(otherBoardContext);
-    _callback();
-}
-
 function passTurn() {
     currentField.setupDone = true;
     if (currentPlayer == 2){
         currentPlayer = 1;
         currentField = fieldPlayer1;
         otherField = fieldPlayer2;
-        clearBoardBeforeAnything(function () {
-            alert("dn");
-            renderEnemyBoard(currentBoardContext, currentField);
-            renderBoard(otherBoardContext, otherField);
-        })
+        clearBoard(currentBoardContext);
+        clearBoard(otherBoardContext);
+        renderGrid(currentBoardContext);
+        renderGrid(otherBoardContext);
+        passTurnButton.style.display = "inline";
     } else {
         currentPlayer = 2;
         currentField = fieldPlayer2;
         otherField = fieldPlayer1;
         clearBoard(currentBoardContext);
         clearBoard(otherBoardContext);
-        clearBoardBeforeAnything(function () {
-            alert("dn");
-            renderEnemyBoard(currentBoardContext, currentField);
-            renderBoard(otherBoardContext, otherField);
-        })
+        renderGrid(currentBoardContext);
+        renderGrid(otherBoardContext);
+        passTurnButton.style.display = "inline";
     }
     if (otherField.hp == 0) {
         if (currentPlayer == 1) {
@@ -337,6 +329,7 @@ function startButtonFunc() {
         player1EndSetup();
     } else {
         passTurn();
+        passTurnButtonFunction();
     }
 }
 
@@ -358,6 +351,13 @@ function clearBoard(ctx) {
     ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
 }
 
+function passTurnButtonFunction() {
+    renderEnemyBoard(currentBoardContext, currentField);
+    renderBoard(otherBoardContext, otherField);
+    passTurnButton.style.display = "none";
+    boardClicked = false;
+}
+
 renderBoard(currentBoardContext, currentField);
 gameStart("1");
 
@@ -365,3 +365,4 @@ currentBoard.addEventListener('click', readClicks);
 currentBoard.addEventListener('mousedown', readClickStart);
 currentBoard.addEventListener('mousemove', readHoverCoordinate);
 startButton.addEventListener('click', startButtonFunc);
+passTurnButton.addEventListener('click', passTurnButtonFunction)
