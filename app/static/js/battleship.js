@@ -272,12 +272,18 @@ function passTurn() {
         otherField = fieldPlayer2;
         clearBoard(currentBoardContext);
         clearBoard(otherBoardContext);
+        renderGrid(currentBoardContext);
+        renderGrid(otherBoardContext);
+        passTurnButton.style.display = "inline";
     } else {
         currentPlayer = 2;
         currentField = fieldPlayer2;
         otherField = fieldPlayer1;
         clearBoard(currentBoardContext);
         clearBoard(otherBoardContext);
+        renderGrid(currentBoardContext);
+        renderGrid(otherBoardContext);
+        passTurnButton.style.display = "inline";
     }
     if (otherField.hp == 0) {
         if (currentPlayer == 1) {
@@ -348,6 +354,7 @@ function clearBoard(ctx) {
 function passTurnButtonFunction() {
     renderEnemyBoard(currentBoardContext, currentField);
     renderBoard(otherBoardContext, otherField);
+    passTurnButton.style.display = "none";
     boardClicked = false;
 }
 
