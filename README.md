@@ -50,7 +50,7 @@ sudo a2enmod wsgi
 cd /var/www
 sudo mkdir FlaskApp
 sudo chown <username> FlaskApp
-sudo chgrp www-data FlaskApp
+sudo chgrp -R www-data FlaskApp
 cd FlaskApp
 ```
 ### 3. Clone the repository
