@@ -115,3 +115,12 @@ andyL -- 2022-03-16 09:26
 
 moved some functions over to ooped functions
 made code to do end of game logic
+
+kevinC -- 2022-03-17 09:26
+
+change ratio to percentage in leaderboard
+
+kevinC -- 2022-03-18 11:12
+
+fix launch instructions for digitalocean
+fix paths to database

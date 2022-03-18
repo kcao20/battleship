@@ -1,6 +1,7 @@
 import sqlite3
+import os
 
-DB_FILE = "database.db"
+DB_FILE = os.path.join(os.path.dirname(__file__), "database.db")
 db = sqlite3.connect(DB_FILE)
 cur = db.cursor()
 
