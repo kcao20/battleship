@@ -25,6 +25,46 @@ class Boat{
     }
 }
 
+class ShadmanGame {
+
+}
+
+class ShadmanBoat {
+
+    length;
+    orientation;
+    
+    x; 
+    y;
+
+    hitLocations; // if we want it?
+    isSunk = false;
+
+    constructor (length) {
+        this.length = length;
+    }
+
+    setOrientation(orientation) {
+        this.orientation = orientation;
+        return this;
+    }
+
+    setY(x) {
+        this.x = x;
+        return this;
+    }
+
+    setX(x) {
+        this.x = x;
+        return this;
+    }
+
+    setIsSunk(isSunk) {
+        this.isSunk = isSunk;
+        return this;
+    }
+}
+
 class ShadmanPlayer {
 
     board; // 2D array of either null or {hit: boolean, shipID: number}
