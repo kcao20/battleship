@@ -22,6 +22,7 @@
         style="padding-left: 1%"
       >
         <div class="container-fluid">
+          <img src="/static/images/favicon.ico" width="45" style="padding-right: 10px;">
           <a class="navbar-brand" href="/">Battleship</a>
           <button
             class="navbar-toggler"
@@ -36,15 +37,17 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-              {{ nav_link('index', 'Home') }} {{ nav_link('leaderboard',
-              'Leaderboard')}}
+              {{ nav_link('index', 'Home') }}
+            </ul>
+            <ul class="navbar-nav mr-auto">
+              {{ nav_link('leaderboard', 'Leaderboard')}}
             </ul>
           </div>
         </div>
       </nav>
     </header>
     <main class="flex-grow-0">
-      <div class="container">{% block content %}{% endblock %}</div>
+      {% block content %}{% endblock %}
     </main>
     <footer class="footer mt-auto py-3 bg-light text-center fixed-bottom">
       <div class="container">
