@@ -128,7 +128,7 @@ application.secret_key = 'something super SUPER secret'
 ### 7. Enable the site and reload apache
 ```
 sudo a2ensite FlaskApp
-service apache2 restart
+systemctl reload apache2
 ```
 
 ### 8. Enter the domain or ip of your website in the search bar to see the website.
