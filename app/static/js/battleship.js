@@ -30,13 +30,18 @@ class ShadmanPlayer {
     board; // 2D array of either null or {hit: boolean, shipID: number}
     boardElement;
     
-    shipsToPlace; 
+    shipsToPlace; // array of lengths of ships player must place
     ships;
 
     constructor () {} // Use builder pattern?
 
     setBoardElement(boardElement) {
         this.boardElement = boardElement;
+        return this; // will allow chaining
+    }
+
+    setShipsToPlace(shipsToPlace) {
+        this.shipsToPlace = shipsToPlace;
         return this; // will allow chaining
     }
 
