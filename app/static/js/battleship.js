@@ -30,6 +30,9 @@ class ShadmanPlayer {
     board; // 2D array of either null or {hit: boolean, shipID: number}
     boardElement;
     
+    shipsToPlace; 
+    ships;
+
     constructor () {} // Use builder pattern?
 
     setBoardElement(boardElement) {
