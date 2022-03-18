@@ -25,7 +25,11 @@ class Boat{
     }
 }
 
-class Board{
+class Player {
+    
+}
+
+class Board {
     hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
     field;
     setupDone = false;
