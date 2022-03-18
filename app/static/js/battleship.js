@@ -25,7 +25,72 @@ class Boat{
     }
 }
 
-class Field{
+class ShadmanGame {
+
+}
+
+class ShadmanBoat {
+
+    length;
+    orientation;
+    
+    x; 
+    y;
+
+    hitLocations; // if we want it?
+    isSunk = false;
+
+    constructor (length) {
+        this.length = length;
+    }
+
+    setOrientation(orientation) {
+        this.orientation = orientation;
+        return this;
+    }
+
+    setY(x) {
+        this.x = x;
+        return this;
+    }
+
+    setX(x) {
+        this.x = x;
+        return this;
+    }
+
+    setIsSunk(isSunk) {
+        this.isSunk = isSunk;
+        return this;
+    }
+}
+
+class ShadmanPlayer {
+
+    board; // 2D array of either null or {hit: boolean, shipID: number}
+    boardElement;
+    
+    shipsToPlace; // array of lengths of ships player must place
+    ships;
+
+    constructor () {} // Use builder pattern?
+
+    setBoardElement(boardElement) {
+        this.boardElement = boardElement;
+        return this; // will allow chaining
+    }
+
+    setShipsToPlace(shipsToPlace) {
+        this.shipsToPlace = shipsToPlace;
+        return this; // will allow chaining
+    }
+
+    getBoardContext() {
+        return boardElement.getContext("2d");
+    }
+}
+
+class Board {
     hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
     field;
     setupDone = false;
@@ -79,8 +144,8 @@ let toMoveBoatY = -1;
 let startButton = document.getElementById("start");
 let currentPlayer = 1;
 
-let fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
-let fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+let fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+let fieldPlayer2 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
 let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
 let boardClicked = false;
@@ -217,15 +282,15 @@ function passTurn() {
     if (otherField.hp == 0) {
         if (currentPlayer == 1) {
             alert("Player 2 wins! Would you like to play again?");
-            fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
-            fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            fieldPlayer2 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
             currentField = fieldPlayer1;
             otherField = fieldPlayer2;
             
         } else {
             alert("Player 1 wins! Would you like to play again?");
-            fieldPlayer1 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
-            fieldPlayer2 = new Field([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            fieldPlayer2 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
             currentField = fieldPlayer1;
             otherField = fieldPlayer2;
         }

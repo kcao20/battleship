@@ -1,9 +1,10 @@
 from flask import Flask, render_template
 import sqlite3
+import os
 
 app = Flask(__name__)
 
-DB_FILE = "database.db"
+DB_FILE = os.path.join(os.path.dirname(__file__), "database.db")
 db = sqlite3.connect(DB_FILE, check_same_thread=False)
 cur = db.cursor()
 
