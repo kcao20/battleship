@@ -127,13 +127,13 @@ from FlaskApp import app as application
 application.secret_key = 'something super SUPER secret'
 ```
 
-### 8. Enable the site and reload apache
+### 7. Enable the site and reload apache
 ```
 sudo a2ensite FlaskApp.conf
 systemctl reload apache2
 ```
 
-### 9. Enter the domain or ip of your website in the search bar to see the website.
+### 8. Enter the domain or ip of your website in the search bar to see the website.
 
 ### Common Issues
 When apache2 tries opening/writing to the database, it often fails.
