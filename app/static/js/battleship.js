@@ -286,6 +286,7 @@ function passTurn() {
         passTurnButton.style.display = "inline";
     }
     if (otherField.hp == 0) {
+        passTurnButton.style.display = "none";
         if (currentPlayer == 1) {
             alert("Player 2 wins! Would you like to play again?");
             fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
