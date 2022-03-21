@@ -142,3 +142,8 @@ hid the board when passing turn (so no cheating can occur)
 austinN -- 2022-03-21 09:17
 
 added username input when the game starts
+
+andyL -- 2022-03-21 09:44
+
+boats randomly spawn now
+hide pass turn button when it is not the right time to show the buttons
