@@ -15,6 +15,11 @@ class Boat{
         this.locations = locations;
         this.hp = hp;
     }
+
+    setOrientation(orientation) {
+        this.orientation = orientation;
+        return this;
+    }
     
     registerHit(pointX, pointY) {
         this.hitLocations.push((pointX, pointY));
@@ -26,39 +31,39 @@ class Boat{
 }
 
 class ShadmanGame {
-
+    
 }
 
 class ShadmanBoat {
-
+    
     length;
     orientation;
     
     x; 
     y;
-
+    
     hitLocations; // if we want it?
     isSunk = false;
-
+    
     constructor (length) {
         this.length = length;
     }
-
+    
     setOrientation(orientation) {
         this.orientation = orientation;
         return this;
     }
-
+    
     setY(x) {
         this.x = x;
         return this;
     }
-
+    
     setX(x) {
         this.x = x;
         return this;
     }
-
+    
     setIsSunk(isSunk) {
         this.isSunk = isSunk;
         return this;
@@ -66,25 +71,25 @@ class ShadmanBoat {
 }
 
 class ShadmanPlayer {
-
+    
     board; // 2D array of either null or {hit: boolean, shipID: number}
     boardElement;
     
     shipsToPlace; // array of lengths of ships player must place
     ships;
-
+    
     constructor () {} // Use builder pattern?
-
+    
     setBoardElement(boardElement) {
         this.boardElement = boardElement;
         return this; // will allow chaining
     }
-
+    
     setShipsToPlace(shipsToPlace) {
         this.shipsToPlace = shipsToPlace;
         return this; // will allow chaining
     }
-
+    
     getBoardContext() {
         return boardElement.getContext("2d");
     }
@@ -113,24 +118,24 @@ class Board {
 }
 
 class Player{
-	username;
-	hits = 0;
-	misses = 0;
-	isWon;
-	
-	constructor(username){
-		this.username = username;
-	}
-
-	gameStatus(win){
-		if (win){
-			isWon=true;
-		}
-		else {
-			isWon=false;
-		}
-	}
-
+    username;
+    hits = 0;
+    misses = 0;
+    isWon;
+    
+    constructor(username){
+        this.username = username;
+    }
+    
+    gameStatus(win){
+        if (win){
+            isWon=true;
+        }
+        else {
+            isWon=false;
+        }
+    }
+    
 }
 
 let currentBoard = document.getElementById("currentBoard");
@@ -156,6 +161,58 @@ let boardClicked = false;
 // let player1 = new Player;
 // let player2 = new Player;
 
+function setupBoard() {
+    let lengthsToDo = [5, 4, 3, 3, 2];
+    for (let i = 0; i < lengthsToDo.length; i++){
+        let isVertical = Math.random() > 0.5;
+        let placeX = 0;
+        let placeY = 0;
+        if (isVertical) {
+            placeX = Math.round(Math.random() * 10);
+            placeY = Math.round(Math.random() * (10 - lengthsToDo[i]));
+            let locations = [];
+            for (let v = 0; v < lengthsToDo[i]; v++){
+                locations.push([placeX, placeY + v]);
+            }
+            let boat = new Boat(locations, length).setOrientation(isVertical);
+            for (let v = 0; v < locations.length; v++){
+                console.log(locations[v]);
+                fieldPlayer1.field[locations[v][0]][locations[v][1]] = boat;
+            }
+            placeX = Math.round(Math.random() * 10);
+            placeY = Math.round(Math.random() * (10 - lengthsToDo[i]));
+            locations = [];
+            for (let v = 0; v < lengthsToDo[i]; v++){
+                locations.push((placeX, placeY + v));
+            }
+            boat = new Boat(locations, length).setOrientation(isVertical);
+            for (let v = 0; v < locations.length; v++){
+                fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
+            }
+        } else {
+            placeY = Math.round(Math.random() * 10);
+            placeX = Math.round(Math.random() * (10 - lengthsToDo[i]));
+            let locations = [];
+            for (let v = 0; v < lengthsToDo[i]; v++){
+                locations.push([placeX + v, placeY]);
+            }
+            let boat = new Boat(locations, length).setOrientation(isVertical);
+            for (let v = 0; v < locations.length; v++){
+                fieldPlayer1.field[locations[v][0]][locations[v][1]] = boat;
+            }
+            placeY = Math.round(Math.random() * 10);
+            placeX = Math.round(Math.random() * (10 - lengthsToDo[i]));
+            locations = [];
+            for (let v = 0; v < lengthsToDo[i]; v++){
+                locations.push((placeX, placeY + v));
+            }
+            boat = new Boat(locations, length).setOrientation(isVertical);
+            for (let v = 0; v < locations.length; v++){
+                fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
+            }
+        }        
+    }
+}
 
 function renderGrid(ctx) {
     for (let i = currentBoard.offsetWidth / 10; i < currentBoard.offsetWidth; i += currentBoard.offsetWidth / 10){
@@ -359,6 +416,7 @@ function passTurnButtonFunction() {
     boardClicked = false;
 }
 
+setupBoard();
 renderBoard(currentBoardContext, currentField);
 gameStart("1");
 
