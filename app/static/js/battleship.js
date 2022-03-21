@@ -128,6 +128,27 @@ class Board {
     }
 }
 
+class Player{
+	username;
+	hits = 0;
+	misses = 0;
+	isWon;
+	
+	constructor(username){
+		this.username = username;
+	}
+
+	gameStatus(win){
+		if (win){
+			isWon=true;
+		}
+		else {
+			isWon=false;
+		}
+	}
+
+}
+
 let currentBoard = document.getElementById("currentBoard");
 let currentBoardContext = currentBoard.getContext("2d");
 let otherBoard = document.getElementById("otherBoard");
@@ -137,6 +158,7 @@ let drag = false;
 let toMoveBoatX = -1;
 let toMoveBoatY = -1;
 let startButton = document.getElementById("start");
+let passTurnButton = document.getElementById("passTurn");
 let currentPlayer = 1;
 
 let fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
@@ -144,6 +166,12 @@ let fieldPlayer2 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)
 let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
 let boardClicked = false;
+
+// var p1 = document.getElementById("p1Name");
+// var p2 = document.getElementById("p2Name");
+// let player1 = new Player;
+// let player2 = new Player;
+
 
 function renderGrid(ctx) {
     for (let i = currentBoard.offsetWidth / 10; i < currentBoard.offsetWidth; i += currentBoard.offsetWidth / 10){
@@ -213,7 +241,6 @@ function readClicks(e) {
                 currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
             }
             passTurn();
-            boardClicked = false;
         }, 1000)
     }
 }
@@ -259,16 +286,23 @@ function passTurn() {
         currentPlayer = 1;
         currentField = fieldPlayer1;
         otherField = fieldPlayer2;
-        renderEnemyBoard(currentBoardContext, currentField);
-        renderBoard(otherBoardContext, otherField);
+        clearBoard(currentBoardContext);
+        clearBoard(otherBoardContext);
+        renderGrid(currentBoardContext);
+        renderGrid(otherBoardContext);
+        passTurnButton.style.display = "inline";
     } else {
         currentPlayer = 2;
         currentField = fieldPlayer2;
         otherField = fieldPlayer1;
-        renderEnemyBoard(currentBoardContext, currentField);
-        renderBoard(otherBoardContext, otherField);
+        clearBoard(currentBoardContext);
+        clearBoard(otherBoardContext);
+        renderGrid(currentBoardContext);
+        renderGrid(otherBoardContext);
+        passTurnButton.style.display = "inline";
     }
     if (otherField.hp == 0) {
+        passTurnButton.style.display = "none";
         if (currentPlayer == 1) {
             alert("Player 2 wins! Would you like to play again?");
             fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
@@ -284,7 +318,7 @@ function passTurn() {
             otherField = fieldPlayer2;
         }
         otherBoard.style.display = 'none';
-        startButton.style.display = 'inline';
+        start.style.display = 'inline';
         renderBoard(currentBoardContext, currentField);
         renderBoard(otherBoardContext, otherField);
         for (let i = 0; i < label.length; i++) {
@@ -312,6 +346,7 @@ function startButtonFunc() {
         player1EndSetup();
     } else {
         passTurn();
+        passTurnButtonFunction();
     }
 }
 
@@ -329,6 +364,17 @@ function renderEnemyBoard(ctx, boardToRender) {
     renderGrid(ctx);
 }
 
+function clearBoard(ctx) {
+    ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
+}
+
+function passTurnButtonFunction() {
+    renderEnemyBoard(currentBoardContext, currentField);
+    renderBoard(otherBoardContext, otherField);
+    passTurnButton.style.display = "none";
+    boardClicked = false;
+}
+
 renderBoard(currentBoardContext, currentField);
 gameStart("1");
 
@@ -336,3 +382,4 @@ currentBoard.addEventListener('click', readClicks);
 currentBoard.addEventListener('mousedown', readClickStart);
 currentBoard.addEventListener('mousemove', readHoverCoordinate);
 startButton.addEventListener('click', startButtonFunc);
+passTurnButton.addEventListener('click', passTurnButtonFunction)
