@@ -85,9 +85,11 @@ class ShadmanPlayer {
 
     board; // 2D array of either null or {hit: boolean, shipID: number}
     // boardElement;
+
+    ships;
     
     shipsToPlace; // array of lengths of ships player must place
-    ships;
+    shipToPlaceOrientation = 'horizontal';   // 'horizontal' 'vertical'
 
     constructor () {} // Use builder pattern?
 
@@ -98,6 +100,11 @@ class ShadmanPlayer {
 
     setShipsToPlace(shipsToPlace) {
         this.shipsToPlace = shipsToPlace;
+        return this; // will allow chaining
+    }
+
+    setShipsToPlaceOrientation(shipToPlaceOrientation) {
+        this.shipToPlaceOrientation = shipToPlaceOrientation;
         return this; // will allow chaining
     }
 
