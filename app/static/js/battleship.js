@@ -189,10 +189,9 @@ let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
 let boardClicked = false;
 
-// var p1 = document.getElementById("p1Name");
-// var p2 = document.getElementById("p2Name");
-// let player1 = new Player;
-// let player2 = new Player;
+let user1 = prompt("Player 1, please enter your username")
+let user2 = prompt("Player 2, please enter your username")
+
 
 
 function renderGrid(ctx) {
@@ -348,7 +347,7 @@ function passTurn() {
         }
         currentPlayer = 1;
     }
-    tellPlayerTurn(String(currentPlayer));
+    tellPlayerTurn(currentPlayer);
 }
 
 function startButtonFunc() {
@@ -373,11 +372,21 @@ function startButtonFunc() {
 }
 
 function gameStart(playerName) {
-    player.innerHTML = "Player " + playerName + ", set up your field!"
+	if (playerName == 1){
+		player.innerHTML = user1 + ", set up your field!"
+	}
+	if (playerName == 2){
+		player.innerHTML = user2 + ", set up your field!"
+	}	
 }
 
 function tellPlayerTurn(playerName) {
-    player.innerHTML = "It is player " + currentPlayer + "'s turn."
+	if (playerName == 1){
+		player.innerHTML = "It is " + user1 + "'s turn."
+	}
+	if (playerName == 2){
+		player.innerHTML = "It is " + user2 + "'s turn."
+	}
 }
 
 function renderEnemyBoard(ctx, boardToRender) {
