@@ -51,7 +51,7 @@ cd /var/www
 sudo mkdir FlaskApp
 sudo chown <username> FlaskApp
 sudo chgrp -R www-data FlaskApp
-chmod g+s FlaskApp
+sudo chmod g+s FlaskApp
 cd FlaskApp
 ```
 ### 3. Clone the repository
@@ -62,6 +62,7 @@ mkdir FlaskApp && cp -r battleship/app/* battleship/requirements.txt FlaskApp
 
 ### 4. Create and activate a virtual enviroment:
 ```
+sudo apt install python3.8-venv
 python3 -m venv venv
 source venv/bin/activate
 ```
@@ -69,7 +70,7 @@ source venv/bin/activate
 ### 5. Install dependencies:
 ```
 cd FlaskApp
-pip3 install -r requirements.txt  
+pip3 install -r requirements.txt
 ```
 
 ### 6. Setup WSGI
@@ -126,10 +127,15 @@ from FlaskApp import app as application
 application.secret_key = 'something super SUPER secret'
 ```
 
-### 7. Enable the site and reload apache
+### 8. Enable the site and reload apache
 ```
-sudo a2ensite FlaskApp
+sudo a2ensite FlaskApp.conf
 systemctl reload apache2
 ```
 
-### 8. Enter the domain or ip of your website in the search bar to see the website.
+### 9. Enter the domain or ip of your website in the search bar to see the website.
+
+### Common Issues
+When apache2 tries opening/writing to the database, it often fails.
+
+To fix, use the absolute path for the database and any other files you try to open that are not static.
