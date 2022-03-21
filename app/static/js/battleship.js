@@ -156,15 +156,14 @@ let startButton = document.getElementById("start");
 let passTurnButton = document.getElementById("passTurn");
 let currentPlayer = 1;
 
-let fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
-let fieldPlayer2 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+let fieldPlayer1 = new Board([[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+let fieldPlayer2 = new Board([[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
 let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
 let boardClicked = false;
 
 let user1 = prompt("Player 1, please enter your username")
 let user2 = prompt("Player 2, please enter your username")
-
 
 function setupBoard() {
     let lengthsToDo = [5, 4, 3, 3, 2];
@@ -173,53 +172,89 @@ function setupBoard() {
         let placeX = 0;
         let placeY = 0;
         if (isVertical) {
-            placeX = Math.round(Math.random() * 10);
-            placeY = Math.round(Math.random() * (10 - lengthsToDo[i]));
+            let goodCoordinates = 0;
+            while (goodCoordinates < lengthsToDo[i]){
+                goodCoordinates = 0;
+                placeX = Math.floor(Math.random() * 10);
+                placeY = Math.floor(Math.random() * (10 - lengthsToDo[i]));
+                for (let v = 0; v < lengthsToDo[i]; v++){
+                    if (!(fieldPlayer1.field[placeX][placeY + v] instanceof Boat)) {
+                        goodCoordinates++;
+                    }
+                }
+            }
             let locations = [];
             for (let v = 0; v < lengthsToDo[i]; v++){
                 locations.push([placeX, placeY + v]);
             }
-            console.log(locations);
+            // console.log(locations);
             let boat = new Boat(locations, length).setOrientation(isVertical);
             for (let v = 0; v < locations.length; v++){
-                console.log(locations[v]);
+                // console.log(locations[v]);
                 fieldPlayer1.field[locations[v][0]][locations[v][1]] = boat;
             }
-            placeX = Math.round(Math.random() * 10);
-            placeY = Math.round(Math.random() * (10 - lengthsToDo[i]));
+            goodCoordinates = 0;
+            while (goodCoordinates < lengthsToDo[i]){
+                goodCoordinates = 0;
+                placeX = Math.floor(Math.random() * 10);
+                placeY = Math.floor(Math.random() * (10 - lengthsToDo[i]));
+                for (let v = 0; v < lengthsToDo[i]; v++){
+                    if (!(fieldPlayer2.field[placeX][placeY + v] instanceof Boat)) {
+                        goodCoordinates++;
+                    }
+                }
+            }
             locations = [];
             for (let v = 0; v < lengthsToDo[i]; v++){
                 locations.push([placeX, placeY + v]);
             }
-            console.log(locations);
+            // console.log(locations);
             boat = new Boat(locations, length).setOrientation(isVertical);
             for (let v = 0; v < locations.length; v++){
-                console.log(locations[v]);
+                // console.log(locations[v]);
                 fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
             }
         } else {
-            placeY = Math.round(Math.random() * 10);
-            placeX = Math.round(Math.random() * (10 - lengthsToDo[i]));
+            let goodCoordinates = 0;
+            while (goodCoordinates < lengthsToDo[i]){
+                goodCoordinates = 0;
+                placeY = Math.floor(Math.random() * 10);
+                placeX = Math.floor(Math.random() * (10 - lengthsToDo[i]));
+                for (let v = 0; v < lengthsToDo[i]; v++){
+                    if (!(fieldPlayer1.field[placeX + v][placeY] instanceof Boat)) {
+                        goodCoordinates++;
+                    }
+                }
+            }
             let locations = [];
             for (let v = 0; v < lengthsToDo[i]; v++){
                 locations.push([placeX + v, placeY]);
             }
             let boat = new Boat(locations, length).setOrientation(isVertical);
-            console.log(locations);
+            // console.log(locations);
             for (let v = 0; v < locations.length; v++){
-                console.log(locations[v]);
+                // console.log(locations[v]);
                 fieldPlayer1.field[locations[v][0]][locations[v][1]] = boat;
             }
-            placeY = Math.round(Math.random() * 10);
-            placeX = Math.round(Math.random() * (10 - lengthsToDo[i]));
+            goodCoordinates = 0;
+            while (goodCoordinates < lengthsToDo[i]){
+                goodCoordinates = 0;
+                placeY = Math.floor(Math.random() * 10);
+                placeX = Math.floor(Math.random() * (10 - lengthsToDo[i]));
+                for (let v = 0; v < lengthsToDo[i]; v++){
+                    if (!(fieldPlayer2.field[placeX + v][placeY] instanceof Boat)) {
+                        goodCoordinates++;
+                    }
+                }
+            }
             locations = [];
             for (let v = 0; v < lengthsToDo[i]; v++){
-                locations.push([placeX, placeY + v]);
+                locations.push([placeX + v, placeY]);
             }
             boat = new Boat(locations, length).setOrientation(isVertical);
-            console.log(locations);
+            // console.log(locations);
             for (let v = 0; v < locations.length; v++){
-                console.log(locations[v]);
+                // console.log(locations[v]);
                 fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
             }
         }        
