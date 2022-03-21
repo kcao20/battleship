@@ -174,6 +174,7 @@ function setupBoard() {
             for (let v = 0; v < lengthsToDo[i]; v++){
                 locations.push([placeX, placeY + v]);
             }
+            console.log(locations);
             let boat = new Boat(locations, length).setOrientation(isVertical);
             for (let v = 0; v < locations.length; v++){
                 console.log(locations[v]);
@@ -183,10 +184,12 @@ function setupBoard() {
             placeY = Math.round(Math.random() * (10 - lengthsToDo[i]));
             locations = [];
             for (let v = 0; v < lengthsToDo[i]; v++){
-                locations.push((placeX, placeY + v));
+                locations.push([placeX, placeY + v]);
             }
+            console.log(locations);
             boat = new Boat(locations, length).setOrientation(isVertical);
             for (let v = 0; v < locations.length; v++){
+                console.log(locations[v]);
                 fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
             }
         } else {
@@ -197,17 +200,21 @@ function setupBoard() {
                 locations.push([placeX + v, placeY]);
             }
             let boat = new Boat(locations, length).setOrientation(isVertical);
+            console.log(locations);
             for (let v = 0; v < locations.length; v++){
+                console.log(locations[v]);
                 fieldPlayer1.field[locations[v][0]][locations[v][1]] = boat;
             }
             placeY = Math.round(Math.random() * 10);
             placeX = Math.round(Math.random() * (10 - lengthsToDo[i]));
             locations = [];
             for (let v = 0; v < lengthsToDo[i]; v++){
-                locations.push((placeX, placeY + v));
+                locations.push([placeX, placeY + v]);
             }
             boat = new Boat(locations, length).setOrientation(isVertical);
+            console.log(locations);
             for (let v = 0; v < locations.length; v++){
+                console.log(locations[v]);
                 fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
             }
         }        
