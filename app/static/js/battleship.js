@@ -37,12 +37,27 @@ class ShadmanGame {
     otherBoard = document.getElementById("otherBoard");
     otherBoardContext = otherBoard.getContext("2d");
 
+    gameScene = 'place_ships'; // 'battle'
+
     currentPlayer = 1;
 
-//  currentBoard.addEventListener('click', readClicks);
-//  currentBoard.addEventListener('mousedown', readClickStart);
-//  currentBoard.addEventListener('mousemove', readHoverCoordinate);
+    constructor() {
+        this.initializeEventListeners();
+    }
 
+    initializeEventListeners() {
+        const clickEventListener = this.currentBoard.addEventListener('click', readClicks);
+        const mouseDownEventListener = this.currentBoard.addEventListener('mousedown', readClickStart);
+        const mouseMoveEventListener = this.currentBoard.addEventListener('mousemove', readHoverCoordinate);      
+        
+        this.eventListeners.push(clickEventListener, mouseDownEventListener, mouseMoveEventListener);
+    }
+
+    removeEventListeners() {
+        this.currentBoard.removeEventListener('click', readClicks);
+        this.currentBoard.removeEventListener('mousedown', readClickStart);
+        this.currentBoard.removeEventListener('mousemove', readHoverCoordinate);      
+    }
 }
 
 class ShadmanBoat {
