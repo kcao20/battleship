@@ -27,6 +27,22 @@ class Boat{
 
 class ShadmanGame {
 
+    DEFAULT_SHIPS_SIZES = [5, 4, 3, 2]
+    
+    player1 = new ShadmanPlayer().setShipsToPlace([...DEFAULT_SHIPS_SIZES]);
+    player2 = new ShadmanPlayer().setShipsToPlace([...DEFAULT_SHIPS_SIZES]);
+
+    currentBoard = document.getElementById("currentBoard");
+    currentBoardContext = currentBoard.getContext("2d");
+    otherBoard = document.getElementById("otherBoard");
+    otherBoardContext = otherBoard.getContext("2d");
+
+    currentPlayer = 1;
+
+//  currentBoard.addEventListener('click', readClicks);
+//  currentBoard.addEventListener('mousedown', readClickStart);
+//  currentBoard.addEventListener('mousemove', readHoverCoordinate);
+
 }
 
 class ShadmanBoat {
@@ -68,31 +84,38 @@ class ShadmanBoat {
 class ShadmanPlayer {
 
     board; // 2D array of either null or {hit: boolean, shipID: number}
-    boardElement;
+    // boardElement;
+
+    ships;
     
     shipsToPlace; // array of lengths of ships player must place
-    ships;
+    shipToPlaceOrientation = 'horizontal';   // 'horizontal' 'vertical'
 
     constructor () {} // Use builder pattern?
 
-    setBoardElement(boardElement) {
-        this.boardElement = boardElement;
-        return this; // will allow chaining
-    }
+    // setBoardElement(boardElement) {
+    //     this.boardElement = boardElement;
+    //     return this; // will allow chaining
+    // }
 
     setShipsToPlace(shipsToPlace) {
         this.shipsToPlace = shipsToPlace;
         return this; // will allow chaining
     }
 
-    getBoardContext() {
-        return boardElement.getContext("2d");
+    setShipsToPlaceOrientation(shipToPlaceOrientation) {
+        this.shipToPlaceOrientation = shipToPlaceOrientation;
+        return this; // will allow chaining
     }
+
+    // getBoardContext() {
+    //     return boardElement.getContext("2d");
+    // }
 }
 
 class Board {
     hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
-    field;
+    board;
     setupDone = false;
     hp;
     
@@ -285,6 +308,7 @@ function passTurn() {
         passTurnButton.style.display = "inline";
     }
     if (otherField.hp == 0) {
+        passTurnButton.style.display = "none";
         if (currentPlayer == 1) {
             alert("Player 2 wins! Would you like to play again?");
             fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
