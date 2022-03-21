@@ -138,3 +138,7 @@ fix paths to database
 andyL -- 2022-03-18 09:26
 
 hid the board when passing turn (so no cheating can occur)
+
+austinN -- 2022-03-21 09:17
+
+added username input when the game starts
