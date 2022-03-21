@@ -27,6 +27,22 @@ class Boat{
 
 class ShadmanGame {
 
+    DEFAULT_SHIPS_SIZES = [5, 4, 3, 2]
+    
+    player1 = new ShadmanPlayer().setShipsToPlace([...DEFAULT_SHIPS_SIZES]);
+    player2 = new ShadmanPlayer().setShipsToPlace([...DEFAULT_SHIPS_SIZES]);
+
+    currentBoard = document.getElementById("currentBoard");
+    currentBoardContext = currentBoard.getContext("2d");
+    otherBoard = document.getElementById("otherBoard");
+    otherBoardContext = otherBoard.getContext("2d");
+
+    currentPlayer = 1;
+
+//  currentBoard.addEventListener('click', readClicks);
+//  currentBoard.addEventListener('mousedown', readClickStart);
+//  currentBoard.addEventListener('mousemove', readHoverCoordinate);
+
 }
 
 class ShadmanBoat {
@@ -68,31 +84,31 @@ class ShadmanBoat {
 class ShadmanPlayer {
 
     board; // 2D array of either null or {hit: boolean, shipID: number}
-    boardElement;
+    // boardElement;
     
     shipsToPlace; // array of lengths of ships player must place
     ships;
 
     constructor () {} // Use builder pattern?
 
-    setBoardElement(boardElement) {
-        this.boardElement = boardElement;
-        return this; // will allow chaining
-    }
+    // setBoardElement(boardElement) {
+    //     this.boardElement = boardElement;
+    //     return this; // will allow chaining
+    // }
 
     setShipsToPlace(shipsToPlace) {
         this.shipsToPlace = shipsToPlace;
         return this; // will allow chaining
     }
 
-    getBoardContext() {
-        return boardElement.getContext("2d");
-    }
+    // getBoardContext() {
+    //     return boardElement.getContext("2d");
+    // }
 }
 
 class Board {
     hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
-    field;
+    board;
     setupDone = false;
     hp;
     
