@@ -117,8 +117,10 @@ class Board {
             this.field[pointY][pointX].registerHit(pointX, pointY);
             this.hp -= 1;
             this.hitLocations[pointY][pointX] = 1;
+            return true;
         } else {
             this.hitLocations[pointY][pointX] = 2;
+            return false;
         }
     }
 }
@@ -322,7 +324,11 @@ function readClicks(e) {
         renderBoard(currentBoardContext, currentField);
     } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)] && currentField.setupDone && !boardClicked) {
         boardClicked = true;
-        currentField.registerHit(getGridX(e), getGridY(e));
+        if (currentField.registerHit(getGridX(e), getGridY(e))) {
+            renderEnemyBoard(currentBoardContext, currentField);
+            boardClicked = false;
+            return;
+        }
         renderEnemyBoard(currentBoardContext, currentField);
         setTimeout(function () {
             if (currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
