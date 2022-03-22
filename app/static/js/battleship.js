@@ -1,3 +1,5 @@
+
+
 class Boat{
     
     length;
@@ -68,6 +70,14 @@ class ShadmanBoat {
         this.isSunk = isSunk;
         return this;
     }
+
+    registerHit(pointX, pointY) {
+        this.hitLocations.push([pointX, pointY]);
+
+        if (this.hitLocations.length = this.length) {
+            this.isSunk = true;
+        }
+    }
 }
 
 class ShadmanPlayer {
@@ -78,23 +88,35 @@ class ShadmanPlayer {
     ships;
     
     shipsToPlace; // array of lengths of ships player must place
-    ships;
+
+    username;
+    hits = 0;
+    misses = 0;
     
     constructor () {} // Use builder pattern?
-    
-    setBoardElement(boardElement) {
-        this.boardElement = boardElement;
-        return this; // will allow chaining
-    }
-    
+
     setShipsToPlace(shipsToPlace) {
         this.shipsToPlace = shipsToPlace;
         return this; // will allow chaining
     }
     
-    getBoardContext() {
-        return boardElement.getContext("2d");
+    setUsername(username){
+        this.username = username;
+        return this;
     }
+
+    receiveHit(pointX, pointY) {
+        if (this.board[pointY][pointX] && !this.board[pointY][pointX].hit) {
+            const shipID = this.board[pointY][pointX].shipID;
+            this.board[pointY][pointX] = {...this.board[pointY][pointX], hit: true}
+            this.ships[shipID].registerHit(pointX, pointY);
+            return true;
+        } else {
+            // this.hitLocations[pointY][pointX] = 2;
+            return false;
+        }
+    }
+
 
     // getBoardContext() {
     //     return boardElement.getContext("2d");
