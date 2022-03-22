@@ -2,6 +2,7 @@ class Boat {
   length;
   orientation;
 
+<<<<<<< HEAD
   x;
   y;
 
@@ -25,6 +26,24 @@ class Boat {
     this.hp -= 1;
     if (this.hp == 0) {
       this.isSunk = true;
+=======
+    setOrientation(orientation) {
+        this.orientation = orientation;
+        return this;
+    }
+
+    setHp(hp) {
+        this.hp = hp;
+        return this;
+    }
+    
+    registerHit(pointX, pointY) {
+        this.hitLocations.push((pointX, pointY));
+        this.hp -= 1;
+        if (this.hp == 0) {
+            this.isSunk = true;
+        }
+>>>>>>> d6218298e2979fcbabc600865d306641a111a33e
     }
   }
 }
@@ -97,6 +116,7 @@ class ShadmanPlayer {
 }
 
 class Board {
+<<<<<<< HEAD
   hitLocations = [
     [, , , , , , , , ,],
     [, , , , , , , , ,],
@@ -125,6 +145,27 @@ class Board {
       this.hitLocations[pointY][pointX] = 1;
     } else {
       this.hitLocations[pointY][pointX] = 2;
+=======
+    hitLocations = [[, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,], [, , , , , , , , ,]];
+    board;
+    setupDone = false;
+    hp;
+    
+    constructor(field) {
+        this.field = field;
+    }
+    
+    registerHit(pointX, pointY) {
+        if (this.field[pointY][pointX] instanceof Boat) {
+            this.field[pointY][pointX].registerHit(pointX, pointY);
+            this.hp -= 1;
+            this.hitLocations[pointY][pointX] = 1;
+            return true;
+        } else {
+            this.hitLocations[pointY][pointX] = 2;
+            return false;
+        }
+>>>>>>> d6218298e2979fcbabc600865d306641a111a33e
     }
   }
 }
@@ -160,6 +201,7 @@ let startButton = document.getElementById("start");
 let passTurnButton = document.getElementById("passTurn");
 let currentPlayer = 1;
 
+<<<<<<< HEAD
 let fieldPlayer1 = new Board(
   [
     [, , , , , , , , ,],
@@ -190,10 +232,15 @@ let fieldPlayer2 = new Board(
   ],
   2
 );
+=======
+let fieldPlayer1 = new Board([[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
+let fieldPlayer2 = new Board([[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
+>>>>>>> d6218298e2979fcbabc600865d306641a111a33e
 let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
 let boardClicked = false;
 
+<<<<<<< HEAD
 let user1 = prompt("Player 1, please enter your username");
 let user2 = prompt("Player 2, please enter your username");
 
@@ -289,6 +336,108 @@ function setupBoard() {
         // console.log(locations[v]);
         fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
       }
+=======
+let user1 = prompt("Player 1, please enter your name: ") || "Player 1"
+let user2 = prompt("Player 2, please enter your name: ") || "Player 2"
+
+function setupBoard() {
+    let lengthsToDo = [5, 4, 3, 3, 2];
+    for (let i = 0; i < lengthsToDo.length; i++){
+        let isVertical = Math.random() > 0.5;
+        let placeX = 0;
+        let placeY = 0;
+        if (isVertical) {
+            let goodCoordinates = 0;
+            while (goodCoordinates < lengthsToDo[i]){
+                goodCoordinates = 0;
+                placeX = Math.floor(Math.random() * 10);
+                placeY = Math.floor(Math.random() * (10 - lengthsToDo[i]));
+                for (let v = 0; v < lengthsToDo[i]; v++){
+                    if (!(fieldPlayer1.field[placeX][placeY + v] instanceof Boat)) {
+                        goodCoordinates++;
+                    }
+                }
+            }
+            let locations = [];
+            for (let v = 0; v < lengthsToDo[i]; v++){
+                locations.push([placeX, placeY + v]);
+            }
+            fieldPlayer1.hp += locations.length;
+            // console.log(locations);
+            let boat = new Boat(locations, length).setOrientation(isVertical).setHp(locations.length)
+            for (let v = 0; v < locations.length; v++){
+                // console.log(locations[v]);
+                fieldPlayer1.field[locations[v][0]][locations[v][1]] = boat;
+            }
+            goodCoordinates = 0;
+            while (goodCoordinates < lengthsToDo[i]){
+                goodCoordinates = 0;
+                placeX = Math.floor(Math.random() * 10);
+                placeY = Math.floor(Math.random() * (10 - lengthsToDo[i]));
+                for (let v = 0; v < lengthsToDo[i]; v++){
+                    if (!(fieldPlayer2.field[placeX][placeY + v] instanceof Boat)) {
+                        goodCoordinates++;
+                    }
+                }
+            }
+            locations = [];
+            for (let v = 0; v < lengthsToDo[i]; v++){
+                locations.push([placeX, placeY + v]);
+            }
+            fieldPlayer2.hp += locations.length;
+            // console.log(locations);
+            boat = new Boat(locations, length).setOrientation(isVertical).setHp(locations.length);
+            for (let v = 0; v < locations.length; v++){
+                // console.log(locations[v]);
+                fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
+            }
+        } else {
+            let goodCoordinates = 0;
+            while (goodCoordinates < lengthsToDo[i]){
+                goodCoordinates = 0;
+                placeY = Math.floor(Math.random() * 10);
+                placeX = Math.floor(Math.random() * (10 - lengthsToDo[i]));
+                for (let v = 0; v < lengthsToDo[i]; v++){
+                    if (!(fieldPlayer1.field[placeX + v][placeY] instanceof Boat)) {
+                        goodCoordinates++;
+                    }
+                }
+            }
+            let locations = [];
+            for (let v = 0; v < lengthsToDo[i]; v++){
+                locations.push([placeX + v, placeY]);
+            }
+            let boat = new Boat(locations, length).setOrientation(isVertical).setHp(locations.length);
+            fieldPlayer1.hp += locations.length;
+            // console.log(locations);
+            for (let v = 0; v < locations.length; v++){
+                // console.log(locations[v]);
+                fieldPlayer1.field[locations[v][0]][locations[v][1]] = boat;
+            }
+            goodCoordinates = 0;
+            while (goodCoordinates < lengthsToDo[i]){
+                goodCoordinates = 0;
+                placeY = Math.floor(Math.random() * 10);
+                placeX = Math.floor(Math.random() * (10 - lengthsToDo[i]));
+                for (let v = 0; v < lengthsToDo[i]; v++){
+                    if (!(fieldPlayer2.field[placeX + v][placeY] instanceof Boat)) {
+                        goodCoordinates++;
+                    }
+                }
+            }
+            locations = [];
+            for (let v = 0; v < lengthsToDo[i]; v++){
+                locations.push([placeX + v, placeY]);
+            }
+            boat = new Boat(locations, length).setOrientation(isVertical).setHp(locations.length);
+            fieldPlayer2.hp += locations.length;
+            // console.log(locations);
+            for (let v = 0; v < locations.length; v++){
+                // console.log(locations[v]);
+                fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
+            }
+        }        
+>>>>>>> d6218298e2979fcbabc600865d306641a111a33e
     }
   }
 }
@@ -369,6 +518,7 @@ function getGridY(e) {
 }
 
 function readClicks(e) {
+<<<<<<< HEAD
   if (
     drag &&
     !(currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) &&
@@ -398,6 +548,29 @@ function readClicks(e) {
       passTurn();
     }, 1000);
   }
+=======
+    if (drag && !(currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) && !(getGridX(e) == toMoveBoatX && getGridY(e) == toMoveBoatY)) {
+        drag = false;
+        currentField.field[getGridY(e)][getGridX(e)] = currentField.field[toMoveBoatY][toMoveBoatX];
+        currentField.field[toMoveBoatY][toMoveBoatX] = null;
+        document.body.style.cursor = 'default';
+        renderBoard(currentBoardContext, currentField);
+    } else if (!currentField.hitLocations[getGridY(e)][getGridX(e)] && currentField.setupDone && !boardClicked) {
+        boardClicked = true;
+        if (currentField.registerHit(getGridX(e), getGridY(e))) {
+            renderEnemyBoard(currentBoardContext, currentField);
+            boardClicked = false;
+            return;
+        }
+        renderEnemyBoard(currentBoardContext, currentField);
+        setTimeout(function () {
+            if (currentField.field[getGridY(e)][getGridX(e)] instanceof Boat) {
+                currentField.field[getGridY(e)][getGridX(e)].registerHit(getGridX(e), getGridY(e));
+            }
+            passTurn();
+        }, 1000)
+    }
+>>>>>>> d6218298e2979fcbabc600865d306641a111a33e
 }
 
 function renderBoard(ctx, boardToRender) {
@@ -533,12 +706,40 @@ function passTurn() {
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
     }
+<<<<<<< HEAD
     otherBoard.style.display = "none";
     start.style.display = "inline";
     renderBoard(currentBoardContext, currentField);
     renderBoard(otherBoardContext, otherField);
     for (let i = 0; i < label.length; i++) {
       label[i].style.display = "none";
+=======
+    if (otherField.hp == 0) {
+        passTurnButton.style.display = "none";
+        if (currentPlayer == 1) {
+            alert("Player 2 wins! Would you like to play again?");
+            fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            fieldPlayer2 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            currentField = fieldPlayer1;
+            otherField = fieldPlayer2;
+            countHits();
+        } else {
+            alert("Player 1 wins! Would you like to play again?");
+            fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            fieldPlayer2 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+            currentField = fieldPlayer1;
+            otherField = fieldPlayer2;
+            countHits();
+        }
+        otherBoard.style.display = 'none';
+        start.style.display = 'inline';
+        renderBoard(currentBoardContext, currentField);
+        renderBoard(otherBoardContext, otherField);
+        for (let i = 0; i < label.length; i++) {
+            label[i].style.display = "none";
+        }
+        currentPlayer = 1;
+>>>>>>> d6218298e2979fcbabc600865d306641a111a33e
     }
     currentPlayer = 1;
   }
@@ -625,6 +826,27 @@ function sendUserInfo() {
       // Should be 'OK' if everything was successful
       console.log(text);
     });
+}
+
+function countHits(){
+    for (let i = 0; i < fieldPlayer1.hitLocations.length; i++){
+        for (let v = 0; v < boardToRender.hitLocations[i].length; v++){
+            if (boardToRender.hitLocations[i][v] == 1) {
+                p2Hit++;
+            } else if (boardToRender.hitLocations[i][v] == 2) {
+				p2Miss++;
+            }
+        }
+    }
+    for (let i = 0; i < fieldPlayer2.hitLocations.length; i++){
+        for (let v = 0; v < boardToRender.hitLocations[i].length; v++){
+            if (boardToRender.hitLocations[i][v] == 1) {
+                p1Hit++;
+            } else if (boardToRender.hitLocations[i][v] == 2) {
+				p1Miss++;
+            }
+        }
+    }
 }
 
 setupBoard();

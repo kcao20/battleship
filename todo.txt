@@ -1,7 +1,5 @@
-- asking for player's username at the beginning of the game
 - if a player hits a ship, they get to go again
 - parsing data to leaderboard after game is finished
 - render different sized ships
 - powers? (not sure if we can get to it in time)
-- inbetween screen for when players want to switch
 
