@@ -397,13 +397,14 @@ function passTurn() {
             fieldPlayer2 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
             currentField = fieldPlayer1;
             otherField = fieldPlayer2;
-            
+            countHits();
         } else {
             alert("Player 1 wins! Would you like to play again?");
             fieldPlayer1 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
             fieldPlayer2 = new Board([[new Boat([(0,0)], 1),,,,,,,,,new Boat([(9,0)], 1)],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
             currentField = fieldPlayer1;
             otherField = fieldPlayer2;
+            countHits();
         }
         otherBoard.style.display = 'none';
         start.style.display = 'inline';
@@ -471,6 +472,28 @@ function passTurnButtonFunction() {
     renderBoard(otherBoardContext, otherField);
     passTurnButton.style.display = "none";
     boardClicked = false;
+}
+
+
+function countHits(){
+    for (let i = 0; i < fieldPlayer1.hitLocations.length; i++){
+        for (let v = 0; v < boardToRender.hitLocations[i].length; v++){
+            if (boardToRender.hitLocations[i][v] == 1) {
+                p2Hit++;
+            } else if (boardToRender.hitLocations[i][v] == 2) {
+				p2Miss++;
+            }
+        }
+    }
+    for (let i = 0; i < fieldPlayer2.hitLocations.length; i++){
+        for (let v = 0; v < boardToRender.hitLocations[i].length; v++){
+            if (boardToRender.hitLocations[i][v] == 1) {
+                p1Hit++;
+            } else if (boardToRender.hitLocations[i][v] == 2) {
+				p1Miss++;
+            }
+        }
+    }
 }
 
 setupBoard();
