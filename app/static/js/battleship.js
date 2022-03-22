@@ -20,6 +20,11 @@ class Boat{
         this.orientation = orientation;
         return this;
     }
+
+    setHp(hp) {
+        this.hp = hp;
+        return this;
+    }
     
     registerHit(pointX, pointY) {
         this.hitLocations.push((pointX, pointY));
@@ -107,9 +112,8 @@ class Board {
     setupDone = false;
     hp;
     
-    constructor(field, hp) {
+    constructor(field) {
         this.field = field;
-        this.hp = hp;
     }
     
     registerHit(pointX, pointY) {
@@ -158,8 +162,8 @@ let startButton = document.getElementById("start");
 let passTurnButton = document.getElementById("passTurn");
 let currentPlayer = 1;
 
-let fieldPlayer1 = new Board([[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
-let fieldPlayer2 = new Board([[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]], 2);
+let fieldPlayer1 = new Board([[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
+let fieldPlayer2 = new Board([[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,],[,,,,,,,,,]]);
 let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
 let boardClicked = false;
@@ -189,8 +193,9 @@ function setupBoard() {
             for (let v = 0; v < lengthsToDo[i]; v++){
                 locations.push([placeX, placeY + v]);
             }
+            fieldPlayer1.hp += locations.length;
             // console.log(locations);
-            let boat = new Boat(locations, length).setOrientation(isVertical);
+            let boat = new Boat(locations, length).setOrientation(isVertical).setHp(locations.length)
             for (let v = 0; v < locations.length; v++){
                 // console.log(locations[v]);
                 fieldPlayer1.field[locations[v][0]][locations[v][1]] = boat;
@@ -210,8 +215,9 @@ function setupBoard() {
             for (let v = 0; v < lengthsToDo[i]; v++){
                 locations.push([placeX, placeY + v]);
             }
+            fieldPlayer2.hp += locations.length;
             // console.log(locations);
-            boat = new Boat(locations, length).setOrientation(isVertical);
+            boat = new Boat(locations, length).setOrientation(isVertical).setHp(locations.length);
             for (let v = 0; v < locations.length; v++){
                 // console.log(locations[v]);
                 fieldPlayer2.field[locations[v][0]][locations[v][1]] = boat;
@@ -232,7 +238,8 @@ function setupBoard() {
             for (let v = 0; v < lengthsToDo[i]; v++){
                 locations.push([placeX + v, placeY]);
             }
-            let boat = new Boat(locations, length).setOrientation(isVertical);
+            let boat = new Boat(locations, length).setOrientation(isVertical).setHp(locations.length);
+            fieldPlayer1.hp += locations.length;
             // console.log(locations);
             for (let v = 0; v < locations.length; v++){
                 // console.log(locations[v]);
@@ -253,7 +260,8 @@ function setupBoard() {
             for (let v = 0; v < lengthsToDo[i]; v++){
                 locations.push([placeX + v, placeY]);
             }
-            boat = new Boat(locations, length).setOrientation(isVertical);
+            boat = new Boat(locations, length).setOrientation(isVertical).setHp(locations.length);
+            fieldPlayer2.hp += locations.length;
             // console.log(locations);
             for (let v = 0; v < locations.length; v++){
                 // console.log(locations[v]);
