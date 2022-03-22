@@ -168,8 +168,8 @@ let currentField = fieldPlayer1;
 let otherField = fieldPlayer2;
 let boardClicked = false;
 
-let user1 = prompt("Player 1, please enter your username")
-let user2 = prompt("Player 2, please enter your username")
+let user1 = prompt("Player 1, please enter your name: ") || "Player 1"
+let user2 = prompt("Player 2, please enter your name: ") || "Player 2"
 
 function setupBoard() {
     let lengthsToDo = [5, 4, 3, 3, 2];
@@ -487,7 +487,6 @@ function passTurnButtonFunction() {
     passTurnButton.style.display = "none";
     boardClicked = false;
 }
-
 
 function countHits(){
     for (let i = 0; i < fieldPlayer1.hitLocations.length; i++){
