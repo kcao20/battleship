@@ -147,3 +147,13 @@ andyL -- 2022-03-21 09:44
 
 boats randomly spawn now
 hide pass turn button when it is not the right time to show the buttons
+
+andyL -- 2022-03-21 20:00
+
+fixed issue where boats could end up spawning on top of each other
+fix issue where boats spawn out of bounds
+
+andyL -- 2022-03-22 09:26
+
+fixed issue where people weren't rewarded for hitting a boat
+fixed issue where hp was not the number of slots covered by boats
