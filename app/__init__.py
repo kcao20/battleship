@@ -33,19 +33,31 @@ def playground():
     return render_template("playground.html")
 
 
-@app.route('/getdata', methods=['GET', 'POST'])
+@app.route("/getdata", methods=["GET", "POST"])
 def getdata():
 
     # POST request
-    if request.method == 'POST':
-        print('Incoming..')
+    if request.method == "POST":
+        print("Incoming..")
         a = request.get_json()
         print(a)
-        return 'OK', 200
+        user1 = a["user1"].strip()
+        user2 = a["user2"].strip()
+        p1Hit = a["p1Hit"]
+        p2Hit = a["p2Hit"]
+        p1Miss = a["p1Miss"]
+        p2Miss = a["p2Miss"]
+        database.add_userC(user1)
+        database.add_userC(user2)
+        p1Win = a["p1Win"]
+        p2Win = a["p2Win"]
+        database.add_statsC(user1, p1Win, p1Hit, p1Miss)
+        database.add_statsC(user2, p2Win, p2Hit, p2Miss)
+        return "OK", 200
 
     # GET request
     else:
-        message = {'greeting':'Hello from Flask!'}
+        message = {"greeting": "Hello from Flask!"}
         return jsonify(message)  # serialize and use JSON headers
 
 

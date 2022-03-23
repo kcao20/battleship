@@ -2,6 +2,19 @@ class Boat {
   length;
   orientation;
 
+  x;
+  y;
+
+  locations;
+  hitLocations = [];
+  isSunk = false;
+  hp;
+
+  constructor(locations, hp) {
+    this.locations = locations;
+    this.hp = hp;
+  }
+
   setOrientation(orientation) {
     this.orientation = orientation;
     return this;
@@ -152,6 +165,11 @@ let toMoveBoatY = -1;
 let startButton = document.getElementById("start");
 let passTurnButton = document.getElementById("passTurn");
 let currentPlayer = 1;
+
+let p1Hit = 0;
+let p2Hit = 0;
+let p1Miss = 0;
+let p2Miss = 0;
 
 let fieldPlayer1 = new Board([
   [, , , , , , , , ,],
@@ -468,6 +486,7 @@ function passTurn() {
   if (otherField.hp == 0) {
     passTurnButton.style.display = "none";
     if (currentPlayer == 1) {
+      sendUserInfo(True, False);
       alert("Player 2 wins! Would you like to play again?");
       fieldPlayer1 = new Board(
         [
@@ -502,6 +521,7 @@ function passTurn() {
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
     } else {
+      sendUserInfo(False, True);
       alert("Player 1 wins! Would you like to play again?");
       fieldPlayer1 = new Board(
         [
@@ -536,87 +556,16 @@ function passTurn() {
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
     }
-    if (otherField.hp == 0) {
-      passTurnButton.style.display = "none";
-      if (currentPlayer == 1) {
-        alert("Player 2 wins! Would you like to play again?");
-        fieldPlayer1 = new Board(
-          [
-            [new Boat([(0, 0)], 1), , , , , , , , , new Boat([(9, 0)], 1)],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-          ],
-          2
-        );
-        fieldPlayer2 = new Board(
-          [
-            [new Boat([(0, 0)], 1), , , , , , , , , new Boat([(9, 0)], 1)],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-          ],
-          2
-        );
-        currentField = fieldPlayer1;
-        otherField = fieldPlayer2;
-        countHits();
-      } else {
-        alert("Player 1 wins! Would you like to play again?");
-        fieldPlayer1 = new Board(
-          [
-            [new Boat([(0, 0)], 1), , , , , , , , , new Boat([(9, 0)], 1)],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-          ],
-          2
-        );
-        fieldPlayer2 = new Board(
-          [
-            [new Boat([(0, 0)], 1), , , , , , , , , new Boat([(9, 0)], 1)],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-            [, , , , , , , , ,],
-          ],
-          2
-        );
-        currentField = fieldPlayer1;
-        otherField = fieldPlayer2;
-        countHits();
-      }
-      otherBoard.style.display = "none";
-      start.style.display = "inline";
-      renderBoard(currentBoardContext, currentField);
-      renderBoard(otherBoardContext, otherField);
-      for (let i = 0; i < label.length; i++) {
-        label[i].style.display = "none";
-      }
-      currentPlayer = 1;
+    p1Hit = 0;
+    p2Hit = 0;
+    p1Miss = 0;
+    p2Miss = 0;
+    otherBoard.style.display = "none";
+    start.style.display = "inline";
+    renderBoard(currentBoardContext, currentField);
+    renderBoard(otherBoardContext, otherField);
+    for (let i = 0; i < label.length; i++) {
+      label[i].style.display = "none";
     }
     currentPlayer = 1;
   }
@@ -645,7 +594,6 @@ function startButtonFunc() {
 }
 
 function gameStart(playerName) {
-  sendUserInfo();
   if (playerName == 1) {
     player.innerHTML = user1 + ", set up your field!";
   }
@@ -680,7 +628,8 @@ function passTurnButtonFunction() {
   boardClicked = false;
 }
 
-function sendUserInfo() {
+function sendUserInfo(player1Win, player2Win) {
+  countHits();
   fetch("/getdata", {
     method: "POST",
     headers: {
@@ -690,7 +639,13 @@ function sendUserInfo() {
     // A JSON payload
     body: JSON.stringify({
       user1: user1,
+      p1Hit: p1Hit,
+      p1Miss: p1Miss,
       user2: user2,
+      p2Hit: p2Hit,
+      p2Miss: p2Miss,
+      p1Win: p1Win,
+      p2Win: p2Win,
     }),
   })
     .then(function (response) {
