@@ -153,6 +153,11 @@ let startButton = document.getElementById("start");
 let passTurnButton = document.getElementById("passTurn");
 let currentPlayer = 1;
 
+let p1Hit = 0;
+let p2Hit = 0;
+let p1Miss = 0;
+let p1Miss = 0;
+
 let fieldPlayer1 = new Board([
   [, , , , , , , , ,],
   [, , , , , , , , ,],
@@ -468,6 +473,7 @@ function passTurn() {
   if (otherField.hp == 0) {
     passTurnButton.style.display = "none";
     if (currentPlayer == 1) {
+      sendUserInfo(True,False)
       alert("Player 2 wins! Would you like to play again?");
       fieldPlayer1 = new Board(
         [
@@ -535,10 +541,15 @@ function passTurn() {
       );
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
+      p1Hit=0;
+      p2Hit=0;
+      p1Miss=0;
+      p2Miss=0;
     }
     if (otherField.hp == 0) {
       passTurnButton.style.display = "none";
       if (currentPlayer == 1) {
+        sendUserInfo(False,True)
         alert("Player 2 wins! Would you like to play again?");
         fieldPlayer1 = new Board(
           [
@@ -572,8 +583,9 @@ function passTurn() {
         );
         currentField = fieldPlayer1;
         otherField = fieldPlayer2;
-        countHits();
+
       } else {
+        sendUserInfo(True,False)
         alert("Player 1 wins! Would you like to play again?");
         fieldPlayer1 = new Board(
           [
@@ -607,7 +619,10 @@ function passTurn() {
         );
         currentField = fieldPlayer1;
         otherField = fieldPlayer2;
-        countHits();
+        p1Hit=0;
+        p2Hit=0;
+        p1Miss=0;
+        p2Miss=0;
       }
       otherBoard.style.display = "none";
       start.style.display = "inline";
@@ -680,7 +695,8 @@ function passTurnButtonFunction() {
   boardClicked = false;
 }
 
-function sendUserInfo() {
+function sendUserInfo(player1Win, player2Win) {
+  countHits();
   fetch("/getdata", {
     method: "POST",
     headers: {
@@ -690,7 +706,13 @@ function sendUserInfo() {
     // A JSON payload
     body: JSON.stringify({
       user1: user1,
+      p1Hit: p1Hit,
+      p1Miss: p1Miss,
       user2: user2,
+      p2Hit: p2Hit,
+      p2Miss: p2Miss,
+      p1Win: p1Win,
+      p2Win: p2Win,
     }),
   })
     .then(function (response) {

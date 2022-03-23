@@ -41,6 +41,18 @@ def getdata():
         print('Incoming..')
         a = request.get_json()
         print(a)
+        user1 = a['user1'].strip()
+        user2 = a['user2'].strip()
+        p1Hit = a['p1Hit']
+        p2Hit = a['p2Hit']
+        p1Miss = a['p1Miss']
+        p2Miss = a['p2Miss']
+        database.add_userC(user1)
+        database.add_userC(user2)
+        p1Win = a['p1Win']
+        p2win = a['p2Win']
+        database.add_statsC(user1,p1Win,p1Hit,p1Missed)
+        database.add_statsC(user2,p2Win,p2Hit,p2Missed)
         return 'OK', 200
 
     # GET request
