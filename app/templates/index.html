@@ -1,39 +1,43 @@
 {% extends "template.html" %}
-{% block title %}Home{% endblock %}
-{% block head%}
-{{ super() }}
-{% endblock %}
+{% block title %}
+    Home
+{% endblock title %}
+{% block head %}
+    {{ super() }}
+{% endblock head %}
 {% block content %}
-<style>
+    <style>
   .important {
     color: #336699;
   }
   .board {
     border: 1px solid black;
   }
-</style>
-
-<div class="container mw-100">
-  <div class="row mx-auto w-100">
-    <div class="col align-self-center text-center">
-      <canvas width="600" height="600" class="board" id="otherBoard" style="display: none"></canvas>
-      <br>
-      <h1 class="label" style="display: none">Your Board</h1>
+    </style>
+    <div class="container mw-100">
+        <div class="row mx-auto w-100">
+            <div class="col align-self-center text-center">
+                <canvas width="600"
+                        height="600"
+                        class="board"
+                        id="otherBoard"
+                        style="display: none"></canvas>
+                <br />
+                <h1 class="label" style="display: none">Your Board</h1>
+            </div>
+            <div class="col-5 align-self-center text-center">
+                <canvas width="600" height="600" class="board" id="currentBoard"></canvas>
+                <br />
+                <h1 class="label" style="display: none">Enemy Board</h1>
+            </div>
+            <div class="col align-self-center text-center">
+                <h3 id="player"></h3>
+                <h3 id="energy">You currently have {{ energy }} energy</h3>
+                <input type="button" id="start" value="Start" />
+                <input type="button" id="passTurn" value="Pass Turn" style="display:none" />
+            </div>
+        </div>
+        <script src="/static/js/battleship.js"></script>
+        <!-- <script src="/static/js/ShadmanJS.js"></script> -->
     </div>
-    <div class="col-5 align-self-center text-center">
-      <canvas width="600" height="600" class="board" id="currentBoard"></canvas>
-      <br>
-      <h1 class="label" style="display: none">Enemy Board</h1>
-    </div>
-    <div class="col align-self-center text-center">
-      <h3 id="player"></h3>
-      <h3 id="energy">You currently have {{ energy }} energy</h3>
-      <input type="button" id="start" value="Start"></input>
-      <input type="button" id="passTurn" value="Pass Turn" style="display:none"></input>
-    </div>
-  </div>
-  <script src="/static/js/battleship.js"></script>
-  <!-- <script src="/static/js/ShadmanJS.js"></script> -->
-</div>
-
-{% endblock %}
+{% endblock content %}
