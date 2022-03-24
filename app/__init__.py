@@ -25,7 +25,7 @@ def leaderboard():
         "SELECT username, gamesPlayed, gamesWon, gamesLost, shotsMissed, shotsLanded, powersUsed FROM usersModern"
     )
     modernTable = cur.fetchall()
-    return render_template("leaderboard.html", classic=classicTable, modern=modernTable)
+    return render_template("leaderboard.html", classic=classicTable)
 
 
 @app.route("/play")
