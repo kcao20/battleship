@@ -540,11 +540,11 @@ function passTurn() {
       ]);
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
+      p1Hit = 0;
+      p2Hit = 0;
+      p1Miss = 0;
+      p2Miss = 0;
     }
-    p1Hit = 0;
-    p2Hit = 0;
-    p1Miss = 0;
-    p2Miss = 0;
     otherBoard.style.display = "none";
     start.style.display = "inline";
     renderBoard(currentBoardContext, currentField);
@@ -611,6 +611,28 @@ function passTurnButtonFunction() {
   renderBoard(otherBoardContext, otherField);
   passTurnButton.style.display = "none";
   boardClicked = false;
+}
+
+function countHits() {
+  for (let i = 0; i < fieldPlayer1.hitLocations.length; i++) {
+    for (let v = 0; v < fieldPlayer1.hitLocations[i].length; v++) {
+      if (fieldPlayer1.hitLocations[i][v] == 1) {
+        p2Hit++;
+      } else if (fieldPlayer1.hitLocations[i][v] == 2) {
+        p2Miss++;
+      }
+    }
+  }
+  for (let i = 0; i < fieldPlayer2.hitLocations.length; i++) {
+    for (let v = 0; v < fieldPlayer2.hitLocations[i].length; v++) {
+      if (fieldPlayer2.hitLocations[i][v] == 1) {
+        p1Hit++;
+      } else if (fieldPlayer2.hitLocations[i][v] == 2) {
+        p1Miss++;
+      }
+    }
+  }
+  console.log(p1Hit, p1Miss, p2Hit, p2Miss)
 }
 
 function sendUserInfo(player1Win, player2Win) {
