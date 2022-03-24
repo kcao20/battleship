@@ -464,8 +464,8 @@ function player1EndSetup() {
 
 function passTurn() {
   currentField.setupDone = true;
-  if (currentPlayer == 2) {
-    currentPlayer = 1;
+  if (currentPlayer == 1) {
+    currentPlayer = 2;
     currentField = fieldPlayer1;
     otherField = fieldPlayer2;
     clearBoard(currentBoardContext);
@@ -474,7 +474,7 @@ function passTurn() {
     renderGrid(otherBoardContext);
     passTurnButton.style.display = "inline";
   } else {
-    currentPlayer = 2;
+    currentPlayer = 1;
     currentField = fieldPlayer2;
     otherField = fieldPlayer1;
     clearBoard(currentBoardContext);
