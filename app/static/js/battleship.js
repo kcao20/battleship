@@ -47,7 +47,7 @@ class Player {
     boardSize = [10, 10];
     board = Player.generateEmptyBoard(this.boardSize); // 2D array of either null or {hit: boolean, shipID: number}
     ships = [];
-    shipsToPlace = []; // array of lengths of ships player must place
+    shipsToPlace = [5, 4, 3, 3, 2]; // array of lengths of ships player must place
     isSetupDone = false;
     sunkenBoats = 0;
     username = "John Wick";
@@ -158,7 +158,7 @@ class Player {
     }
 }
 
-const defaultShipsToPlace = [1];
+const defaultShipsToPlace = [5, 4, 3, 3, 2];
 let player1 = new Player().setShipsToPlace([...defaultShipsToPlace]);
 let player2 = new Player().setShipsToPlace([...defaultShipsToPlace]);
 
