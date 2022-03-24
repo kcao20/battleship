@@ -8,11 +8,9 @@ class Boat {
   locations;
   hitLocations = [];
   isSunk = false;
-  hp;
 
-  constructor(locations, hp) {
+  constructor(locations) {
     this.locations = locations;
-    this.hp = hp;
   }
 
   setOrientation(orientation) {
@@ -33,8 +31,6 @@ class Boat {
     }
   }
 }
-
-class ShadmanGame {}
 
 class ShadmanBoat {
   length;
@@ -500,8 +496,7 @@ function passTurn() {
           [, , , , , , , , ,],
           [, , , , , , , , ,],
           [, , , , , , , , ,],
-        ],
-        2
+        ]
       );
       fieldPlayer2 = new Board(
         [
@@ -515,8 +510,7 @@ function passTurn() {
           [, , , , , , , , ,],
           [, , , , , , , , ,],
           [, , , , , , , , ,],
-        ],
-        2
+        ]
       );
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
