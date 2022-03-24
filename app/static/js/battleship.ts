@@ -1,191 +1,252 @@
-let user1 = prompt("Player 1, please enter your username");
-let user2 = prompt("Player 2, please enter your username");
-var GAME_SCENES;
-(function (GAME_SCENES) {
-    GAME_SCENES["PLAYER_1_SETUP"] = "player-1-setup";
-    GAME_SCENES["PLAYER_2_SETUP"] = "player-2-setup";
-    GAME_SCENES["BATTLE"] = "battle";
-})(GAME_SCENES || (GAME_SCENES = {}));
-var BOAT_ORIENTATIONS;
-(function (BOAT_ORIENTATIONS) {
-    BOAT_ORIENTATIONS["HORIZONTAL"] = "horizontal";
-    BOAT_ORIENTATIONS["VERTICAL"] = "vertical";
-})(BOAT_ORIENTATIONS || (BOAT_ORIENTATIONS = {}));
+let user1 = prompt("Player 1, please enter your username")
+let user2 = prompt("Player 2, please enter your username")
+
+enum GAME_SCENES {
+    PLAYER_1_SETUP = "player-1-setup",
+    PLAYER_2_SETUP = "player-2-setup",
+    BATTLE = "battle",
+}
+
+enum BOAT_ORIENTATIONS {
+    HORIZONTAL = 'horizontal',
+    VERTICAL = 'vertical',
+}
+
+type Board = ({ hit?: boolean, shipID?: number, miss?: true } | null)[][];
+
 class Boat {
-    length;
-    orientation;
-    x;
-    y;
-    locations = [];
-    hitLocations = [];
-    isSunk = false;
-    constructor(length, locations) {
+
+    length: number;
+    orientation: BOAT_ORIENTATIONS;
+
+    x: number;
+    y: number;
+
+    locations: [number, number][] = [];
+    hitLocations: [number, number][] = [];
+    isSunk: boolean = false;
+
+    constructor(length: number, locations: [number, number][]) {
         this.length = length;
         this.locations = locations;
     }
-    setOrientation(orientation) {
+
+    setOrientation(orientation: BOAT_ORIENTATIONS) {
         this.orientation = orientation;
         return this;
     }
-    setX(x) {
+
+    setX(x: number) {
         this.x = x;
         return this;
     }
-    setY(y) {
+
+    setY(y: number) {
         this.y = y;
         return this;
     }
-    setIsSunk(isSunk) {
+
+    setIsSunk(isSunk: boolean) {
         this.isSunk = isSunk;
         return this;
     }
-    registerHit(pointX, pointY) {
+
+    registerHit(pointX: number, pointY: number) {
         this.hitLocations.push([pointX, pointY]);
+
         if (this.hitLocations.length = this.length) {
             this.isSunk = true;
         }
     }
 }
+
 class Player {
-    boardSize = [10, 10];
-    board = Player.generateEmptyBoard(this.boardSize); // 2D array of either null or {hit: boolean, shipID: number}
-    ships = [];
-    shipsToPlace = []; // array of lengths of ships player must place
-    isSetupDone = false;
+
+    boardSize: [number, number] = [10, 10];
+    board: Board = Player.generateEmptyBoard(this.boardSize); // 2D array of either null or {hit: boolean, shipID: number}
+
+    ships: Boat[] = [];
+
+    shipsToPlace: number[] = []; // array of lengths of ships player must place
+
+    isSetupDone: boolean = false;
+
     sunkenBoats = 0;
-    username = "John Wick";
-    hits = 0;
-    misses = 0;
+
+    username: string = "John Wick";
+    hits: number = 0;
+    misses: number = 0;
+
     constructor() { } // Use builder pattern?
+
     reset() {
         this.ships = [];
         this.shipsToPlace = [];
         this.isSetupDone = false;
         this.board = Player.generateEmptyBoard(this.boardSize);
     }
+
     setShipsToPlace(shipsToPlace) {
         this.shipsToPlace = shipsToPlace;
         return this; // will allow chaining
     }
+
     setUsername(username) {
         username = username;
         return this;
     }
+
     receiveHit(pointX, pointY) {
         const boat = this.board[pointY][pointX];
         if (boat) {
             if (typeof boat.shipID !== "undefined") {
                 const shipID = this.board[pointY][pointX].shipID;
-                this.board[pointY][pointX] = { ...this.board[pointY][pointX], hit: true };
+                this.board[pointY][pointX] = { ...this.board[pointY][pointX], hit: true }
                 this.ships[shipID].registerHit(pointX, pointY);
+
                 if (this.ships[shipID].isSunk) {
                     this.sunkenBoats++;
                 }
+
                 return true;
             }
-        }
-        else {
+
+        } else {
             this.board[pointY][pointX] = { miss: true };
             return false;
         }
     }
+
     getObjectAtPos(x, y) {
-        return this.board[y][x];
+        return this.board[y][x]
     }
+
     setObjectAtPos(x, y, obj) {
         this.board[y][x] = obj;
-        return this.board;
+        return this.board
     }
+
     setBoard(board) {
         this.board = board;
         return this;
     }
-    static generateEmptyBoard(boardSize) {
-        let board = [];
+
+    static generateEmptyBoard(boardSize: [number, number]): Board {
+        let board: Board = [];
+
         for (let i = 0; i < boardSize[0]; i++) {
             let col = [];
+
             for (let j = 0; j < boardSize[1]; j++) {
                 col[j] = null;
             }
+
             board[i] = col;
         }
-        return board;
+
+        return board
     }
+
     randomlySetupBoard() {
         this.board = Player.generateEmptyBoard(this.boardSize);
         while (this.shipsToPlace.length > 0) {
+
             const boatLength = this.shipsToPlace.shift();
+
             // console.log(boatLength)
-            let orientation = Math.random() > 0.5 ? BOAT_ORIENTATIONS.VERTICAL : BOAT_ORIENTATIONS.HORIZONTAL;
+
+            let orientation: BOAT_ORIENTATIONS = Math.random() > 0.5 ? BOAT_ORIENTATIONS.VERTICAL : BOAT_ORIENTATIONS.HORIZONTAL;
+
             let placeX = 0;
             let placeY = 0;
+
             let goodCoordinates = 0;
+
             while (goodCoordinates < boatLength) {
+
                 if (orientation === BOAT_ORIENTATIONS.VERTICAL) {
                     placeX = Math.floor(Math.random() * 10);
                     placeY = Math.floor(Math.random() * (10 - boatLength));
-                }
-                else {
+                } else {
                     placeX = Math.floor(Math.random() * (10 - boatLength));
                     placeY = Math.floor(Math.random() * 10);
                 }
+
                 for (let v = 0; v < boatLength; v++) {
                     if (!(this.board[placeX][placeY + v])) {
                         goodCoordinates++;
-                    }
-                    else {
-                        break;
+                    } else {
+                        break
                     }
                 }
             }
-            let locations = [];
+            let locations: [number, number][] = [];
+
             for (let v = 0; v < boatLength; v++) {
                 if (orientation == BOAT_ORIENTATIONS.VERTICAL) {
                     locations.push([placeX, placeY + v]);
-                }
-                else {
+                } else {
                     locations.push([placeX + v, placeY]);
                 }
             }
             // console.log(locations);
             let boat = new Boat(length, locations).setOrientation(orientation);
-            this.ships.push(boat);
+
+            this.ships.push(boat)
+
             const boatIndex = this.ships.length - 1;
+
             // console.log(locations)
+
             for (let v = 0; v < locations.length; v++) {
                 // console.log(board);
+
                 this.board[locations[v][0]][locations[v][1]] = { hit: false, shipID: boatIndex };
             }
         }
+
         return this;
     }
 }
+
+
 const scene = GAME_SCENES.PLAYER_1_SETUP;
+
 const defaultShipsToPlace = [5, 4, 3, 2];
+
 let player1 = new Player().setShipsToPlace([...defaultShipsToPlace]);
 let player2 = new Player().setShipsToPlace([...defaultShipsToPlace]);
-const currentBoard = document.getElementById("currentBoard");
+
+const currentBoard = document.getElementById("currentBoard") as HTMLCanvasElement;
 const currentBoardContext = currentBoard.getContext("2d");
-const otherBoard = document.getElementById("otherBoard");
+const otherBoard = document.getElementById("otherBoard") as HTMLCanvasElement;
 const otherBoardContext = otherBoard.getContext("2d");
-const labels = document.getElementsByClassName("label");
+
+const labels = document.getElementsByClassName("label") as HTMLCollectionOf<HTMLElement>;
+
 let drag = false;
 let toMoveBoatX = -1;
 let toMoveBoatY = -1;
-const startButton = document.getElementById("start");
-const passTurnButton = document.getElementById("passTurn");
+
+const startButton = document.getElementById("start") as HTMLButtonElement;
+const passTurnButton = document.getElementById("passTurn") as HTMLButtonElement;
+
 let boardClicked = false;
+
 let currentPlayer = 1;
 let otherPlayer = 2;
-let currentPlayerObject = player1;
-let otherPlayerObject = player2;
-function changeCurrentPlayer(playerNum) {
+
+let currentPlayerObject: Player = player1;
+let otherPlayerObject: Player = player2;
+
+function changeCurrentPlayer(playerNum: number) {
     switch (playerNum) {
         case 1:
             currentPlayerObject = player1;
             otherPlayerObject = player2;
             currentPlayer = 1;
             otherPlayer = 2;
+            
             break;
         case 2:
             currentPlayerObject = player2;
@@ -195,34 +256,43 @@ function changeCurrentPlayer(playerNum) {
             break;
     }
 }
+
 function setupBoard() {
     player1.randomlySetupBoard();
     player2.randomlySetupBoard();
 }
-function currentField() {
+
+function currentField(): Board {
     if (currentPlayer == 1) {
         return player1.board;
     }
+
     if (currentPlayer == 2) {
         return player2.board;
     }
 }
-function otherField() {
+
+function otherField(): Board {
     if (currentPlayer == 2) {
         return player1.board;
     }
+
     if (currentPlayer == 1) {
         return player2.board;
     }
+
 }
+
 // currentPlayerObject() {
 //     if (currentPlayer == 1) {
 //         return player1;
 //     } 
+
 //     if (currentPlayer == 2) {
 //         return player2;
 //     } 
 // }
+
 // otherPlayerObject(): Player {
 //     switch (currentPlayer) {
 //         case 2:
@@ -233,13 +303,15 @@ function otherField() {
 //             throw new Error("Invalid current player")
 //     }
 // }
-function renderGrid(ctx) {
+
+function renderGrid(ctx: CanvasRenderingContext2D) {
     for (let i = currentBoard.offsetWidth / 10; i < currentBoard.offsetWidth; i += currentBoard.offsetWidth / 10) {
         ctx.beginPath();
         ctx.moveTo(i, 0);
         ctx.lineTo(i, currentBoard.offsetHeight);
         ctx.stroke();
     }
+
     for (let i = currentBoard.offsetHeight / 10; i < currentBoard.offsetHeight; i += currentBoard.offsetHeight / 10) {
         ctx.beginPath();
         ctx.moveTo(0, i);
@@ -247,8 +319,11 @@ function renderGrid(ctx) {
         ctx.stroke();
     }
 }
-function renderBoats(ctx, boardToRender) {
+
+
+function renderBoats(ctx: CanvasRenderingContext2D, boardToRender: Board) {
     ctx.fillStyle = "blue";
+
     for (let i = 0; i < boardToRender.length; i++) {
         for (let v = 0; v < boardToRender[i].length; v++) {
             if (boardToRender[i][v]) {
@@ -257,70 +332,94 @@ function renderBoats(ctx, boardToRender) {
         }
     }
 }
-function renderHits(ctx, boardToRender) {
+
+function renderHits(ctx: CanvasRenderingContext2D, boardToRender: Board) {
     for (let i = 0; i < boardToRender.length; i++) {
         for (let v = 0; v < boardToRender[i].length; v++) {
             if (boardToRender[i][v] && boardToRender[i][v].hit) {
                 ctx.fillStyle = "red";
                 ctx.fillRect(v * currentBoard.offsetWidth / 10, i * currentBoard.offsetHeight / 10, currentBoard.offsetWidth / 10, currentBoard.offsetHeight / 10);
-            }
-            else if (boardToRender[i][v] && boardToRender[i][v].miss) {
+            } else if (boardToRender[i][v] && boardToRender[i][v].miss) {
                 ctx.fillStyle = "#c2c3c7";
                 ctx.fillRect(v * currentBoard.offsetWidth / 10, i * currentBoard.offsetHeight / 10, currentBoard.offsetWidth / 10, currentBoard.offsetHeight / 10);
             }
         }
     }
 }
+
 function getGridX(e) {
     const rect = currentBoard.getBoundingClientRect();
     return Math.floor((e.clientX - rect.left) / (currentBoard.offsetWidth / 10));
 }
+
 function getGridY(e) {
     const rect = currentBoard.getBoundingClientRect();
     return Math.floor((e.clientY - rect.top) / (currentBoard.offsetHeight / 10));
 }
-function moveBoatAt(oldX, oldY, newX, newY) {
-    console.log(newX, newY, oldX, oldY);
+
+function moveBoatAt(oldX: number, oldY: number, newX :  number, newY: number) {
+    console.log(newX, newY, oldX, oldY)
+    
     const objectAtPos = currentField()[oldY][oldX];
+
     const deltaX = newX - oldX;
     const deltaY = newY - oldY;
+
     if (objectAtPos && typeof objectAtPos.shipID === "number") {
+
         const shipID = objectAtPos.shipID;
+
         const boat = currentPlayerObject.ships[shipID];
+
+
         const oldLocations = boat.locations;
-        const newLocations = oldLocations.map((cords) => [cords[0] + deltaY, cords[1] + deltaX]);
+
+        const newLocations : [number, number][] = oldLocations.map((cords) => [cords[0] + deltaY, cords[1] + deltaX]);
+
         //checks if valid
         for (let i = 0; i < newLocations.length; i++) {
             const cords = newLocations[i];
+
             const inBoard = cords[0] < 10 && cords[0] >= 0 && cords[1] < 10 && cords[1] >= 0;
-            if (!inBoard)
-                return;
+
+            if (!inBoard) return;
+
             const newCordData = currentField()[cords[0]][cords[1]];
+
             let isDiffBoat = newCordData && typeof newCordData.shipID !== "undefined" && newCordData.shipID !== shipID;
-            if (isDiffBoat)
-                return;
-            console.log("hey");
+
+            if (isDiffBoat) return;
+
+            console.log("hey")
         }
+
+
         //move ship
         for (let i = 0; i < oldLocations.length; i++) {
             const oldCords = oldLocations[i];
             currentField()[oldCords[0]][oldCords[1]] = null;
         }
+
         for (let i = 0; i < newLocations.length; i++) {
             const newCords = newLocations[i];
-            currentField()[newCords[0]][newCords[1]] = { hit: false, shipID };
+            currentField()[newCords[0]][newCords[1]] = {hit: false, shipID};
         }
+
         boat.locations = newLocations;
     }
+
 }
+
 function readClicks(e) {
     if (drag && !(getGridX(e) == toMoveBoatX && getGridY(e) == toMoveBoatY)) {
         drag = false;
-        moveBoatAt(toMoveBoatX, toMoveBoatY, getGridX(e), getGridY(e));
+
+        moveBoatAt( toMoveBoatX, toMoveBoatY, getGridX(e), getGridY(e))
+
         document.body.style.cursor = 'default';
+
         renderBoard(currentBoardContext, currentField());
-    }
-    else if (!currentField()[getGridY(e)][getGridX(e)]?.hit && currentPlayerObject.isSetupDone && !boardClicked) {
+    } else if (!currentField()[getGridY(e)][getGridX(e)]?.hit && currentPlayerObject.isSetupDone && !boardClicked) {
         boardClicked = true;
         if (currentPlayerObject.receiveHit(getGridX(e), getGridY(e))) {
             renderEnemyBoard(currentBoardContext, currentField());
@@ -332,21 +431,21 @@ function readClicks(e) {
         setTimeout(function () {
             if (currentField()[getGridY(e)][getGridX(e)]) {
                 const shipID = currentField()[getGridY(e)][getGridX(e)].shipID || null;
-                if (shipID) {
-                    currentPlayerObject.ships[shipID].registerHit(getGridX(e), getGridY(e));
-                }
-                ;
+
+                if (shipID) { currentPlayerObject.ships[shipID].registerHit(getGridX(e), getGridY(e)) };
             }
             passTurn();
-        }, 500);
+        }, 500)
     }
 }
-function renderBoard(ctx, boardToRender) {
+
+function renderBoard(ctx: CanvasRenderingContext2D, boardToRender: Board) {
     ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
     renderBoats(ctx, boardToRender);
     renderHits(ctx, boardToRender);
     renderGrid(ctx);
 }
+
 function readClickStart(e) {
     if (!currentPlayerObject.isSetupDone) {
         drag = true;
@@ -356,9 +455,11 @@ function readClickStart(e) {
         // console.log(getGridX(e), getGridY(e));
     }
 }
+
 function readHoverCoordinate(e) {
     // console.log(getGridX(e), getGridY(e));
     // console.log(currentPlayer)
+
     if (!currentPlayerObject.isSetupDone && 0 <= getGridY(e) && getGridY(e) < 10 && 0 <= getGridX(e) && getGridX(e) < 10 && currentField()[getGridY(e)][getGridX(e)]) {
         document.body.style.cursor = 'move';
     }
@@ -366,23 +467,26 @@ function readHoverCoordinate(e) {
         document.body.style.cursor = 'default';
     }
 }
+
 function player1EndSetup() {
+
     currentPlayerObject.isSetupDone = true;
-    changeCurrentPlayer(2);
+    changeCurrentPlayer(2)
     renderBoard(currentBoardContext, currentField());
 }
+
 function passTurn() {
     currentPlayerObject.isSetupDone = true;
+
     if (currentPlayer == 2) {
-        changeCurrentPlayer(1);
+        changeCurrentPlayer(1)
         clearBoard(currentBoardContext);
         clearBoard(otherBoardContext);
         renderGrid(currentBoardContext);
         renderGrid(otherBoardContext);
         passTurnButton.style.display = "inline";
-    }
-    else {
-        changeCurrentPlayer(2);
+    } else {
+        changeCurrentPlayer(2)
         clearBoard(currentBoardContext);
         clearBoard(otherBoardContext);
         renderGrid(currentBoardContext);
@@ -395,14 +499,13 @@ function passTurn() {
             alert("Player 2 wins! Would you like to play again?");
             player1.reset();
             player2.reset();
-            changeCurrentPlayer(2);
+            changeCurrentPlayer(2)
             // countHits();
-        }
-        else {
+        } else {
             alert("Player 1 wins! Would you like to play again?");
             player1.reset();
             player2.reset();
-            changeCurrentPlayer(2);
+            changeCurrentPlayer(2)
             // countHits();
         }
         otherBoard.style.display = 'none';
@@ -412,10 +515,11 @@ function passTurn() {
         for (let i = 0; i < labels.length; i++) {
             labels[i].style.display = "none";
         }
-        changeCurrentPlayer(1);
+        changeCurrentPlayer(1)
     }
     // tellPlayerTurn(currentPlayer);
 }
+
 function startButtonFunc() {
     if (currentPlayer == 2 && !player2.isSetupDone) {
         player2.isSetupDone = true;
@@ -424,17 +528,18 @@ function startButtonFunc() {
         for (let i = 0; i < labels.length; i++) {
             labels[i].style.display = "inline";
         }
+
         renderBoard(currentBoardContext, currentField());
         renderEnemyBoard(otherBoardContext, otherField());
     }
     if (!player2.isSetupDone) {
         player1EndSetup();
-    }
-    else {
+    } else {
         passTurn();
         passTurnButtonFunction();
     }
 }
+
 // gameStart(playerName) {
 //     if (playerName == 1) {
 //         player.innerHTML = user1 + ", set up your field!"
@@ -443,6 +548,7 @@ function startButtonFunc() {
 //         player.innerHTML = user2 + ", set up your field!"
 //     }
 // }
+
 // tellPlayerTurn(playerName) {
 //     if (playerName == 1) {
 //         player.innerHTML = "It is " + user1 + "'s turn."
@@ -451,26 +557,32 @@ function startButtonFunc() {
 //         player.innerHTML = "It is " + user2 + "'s turn."
 //     }
 // }
-function renderEnemyBoard(ctx, boardToRender) {
+
+function renderEnemyBoard(ctx: CanvasRenderingContext2D, boardToRender: Board) {
     ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
     renderHits(ctx, boardToRender);
     renderGrid(ctx);
 }
+
 function clearBoard(ctx) {
     ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
 }
+
 function passTurnButtonFunction() {
     renderEnemyBoard(currentBoardContext, currentField());
     renderBoard(otherBoardContext, otherField());
     passTurnButton.style.display = "none";
     boardClicked = false;
 }
+
 player1.setUsername(user1);
 player2.setUsername(user2);
+
 setupBoard();
 renderBoard(currentBoardContext, currentField());
+
 currentBoard.addEventListener('click', readClicks);
 currentBoard.addEventListener('mousedown', readClickStart);
 currentBoard.addEventListener('mousemove', readHoverCoordinate);
 startButton.addEventListener('click', startButtonFunc);
-passTurnButton.addEventListener('click', passTurnButtonFunction);
+passTurnButton.addEventListener('click', passTurnButtonFunction)
