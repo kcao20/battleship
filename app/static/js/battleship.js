@@ -540,11 +540,11 @@ function passTurn() {
       ]);
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
+      p1Hit = 0;
+      p2Hit = 0;
+      p1Miss = 0;
+      p2Miss = 0;
     }
-    p1Hit = 0;
-    p2Hit = 0;
-    p1Miss = 0;
-    p2Miss = 0;
     otherBoard.style.display = "none";
     start.style.display = "inline";
     renderBoard(currentBoardContext, currentField);
@@ -613,12 +613,31 @@ function passTurnButtonFunction() {
   boardClicked = false;
 }
 
+function countHits() {
+  for (let i = 0; i < fieldPlayer1.hitLocations.length; i++) {
+    for (let v = 0; v < fieldPlayer1.hitLocations[i].length; v++) {
+      if (fieldPlayer1.hitLocations[i][v] == 1) {
+        p2Hit++;
+      } else if (fieldPlayer1.hitLocations[i][v] == 2) {
+        p2Miss++;
+      }
+    }
+  }
+  for (let i = 0; i < fieldPlayer2.hitLocations.length; i++) {
+    for (let v = 0; v < fieldPlayer2.hitLocations[i].length; v++) {
+      if (fieldPlayer2.hitLocations[i][v] == 1) {
+        p1Hit++;
+      } else if (fieldPlayer2.hitLocations[i][v] == 2) {
+        p1Miss++;
+      }
+    }
+  }
+  console.log(p1Hit, p1Miss, p2Hit, p2Miss)
+}
+
 function sendUserInfo(player1Win, player2Win) {
-  let p1Hit = 0;
-  let p1Miss = 0;
-  let p2Hit = 0;
-  let p2Miss = 0;
-  countHits(p1Hit, p1Miss, p2Hit, p2Miss);
+  countHits();
+  console.log(p1Hit, p1Miss, p2Hit, p2Miss, player1Win, player2Win)
   fetch("/getdata", {
     method: "POST",
     headers: {
@@ -647,27 +666,6 @@ function sendUserInfo(player1Win, player2Win) {
       // Should be 'OK' if everything was successful
       console.log(text);
     });
-}
-
-function countHits(p1Hit, p1Miss, p2Hit, p2Miss) {
-  for (let i = 0; i < fieldPlayer1.hitLocations.length; i++) {
-    for (let v = 0; v < fieldPlayer1.hitLocations[i].length; v++) {
-      if (fieldPlayer1.hitLocations[i][v] == 1) {
-        p2Hit++;
-      } else if (fieldPlayer1.hitLocations[i][v] == 2) {
-        p2Miss++;
-      }
-    }
-  }
-  for (let i = 0; i < fieldPlayer2.hitLocations.length; i++) {
-    for (let v = 0; v < fieldPlayer2.hitLocations[i].length; v++) {
-      if (fieldPlayer2.hitLocations[i][v] == 1) {
-        p1Hit++;
-      } else if (fieldPlayer2.hitLocations[i][v] == 2) {
-        p1Miss++;
-      }
-    }
-  }
 }
 
 setupBoard();
