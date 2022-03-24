@@ -76,7 +76,7 @@ class ShadmanPlayer {
   shipsToPlace; // array of lengths of ships player must place
   ships;
 
-  constructor() {} // Use builder pattern?
+  constructor() { } // Use builder pattern?
 
   setBoardElement(boardElement) {
     this.boardElement = boardElement;
@@ -112,7 +112,7 @@ class Board {
   ];
   board;
   setupDone = false;
-  hp;
+  hp = 0;
 
   constructor(field) {
     this.field = field;
@@ -479,72 +479,65 @@ function passTurn() {
     renderGrid(otherBoardContext);
     passTurnButton.style.display = "inline";
   }
+  console.log(otherField.hp);
   if (otherField.hp == 0) {
     passTurnButton.style.display = "none";
     if (currentPlayer == 1) {
-      sendUserInfo(True, False);
+      sendUserInfo(true, false);
       alert("Player 2 wins! Would you like to play again?");
-      fieldPlayer1 = new Board(
-        [
-          [new Boat([(0, 0)], 1), , , , , , , , , new Boat([(9, 0)], 1)],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-        ]
-      );
-      fieldPlayer2 = new Board(
-        [
-          [new Boat([(0, 0)], 1), , , , , , , , , new Boat([(9, 0)], 1)],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-        ]
-      );
+      fieldPlayer1 = new Board([
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+      ]);
+      fieldPlayer2 = new Board([
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+      ]);
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
     } else {
-      sendUserInfo(False, True);
+      sendUserInfo(false, true);
       alert("Player 1 wins! Would you like to play again?");
-      fieldPlayer1 = new Board(
-        [
-          [new Boat([(0, 0)], 1), , , , , , , , , new Boat([(9, 0)], 1)],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-        ]
-      );
-      fieldPlayer2 = new Board(
-        [
-          [new Boat([(0, 0)], 1), , , , , , , , , new Boat([(9, 0)], 1)],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-          [, , , , , , , , ,],
-        ]
-      );
+      fieldPlayer1 = new Board([
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+      ]);
+      fieldPlayer2 = new Board([
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+        [, , , , , , , , ,],
+      ]);
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
     }
@@ -621,7 +614,11 @@ function passTurnButtonFunction() {
 }
 
 function sendUserInfo(player1Win, player2Win) {
-  countHits();
+  let p1Hit = 0;
+  let p1Miss = 0;
+  let p2Hit = 0;
+  let p2Miss = 0;
+  countHits(p1Hit, p1Miss, p2Hit, p2Miss);
   fetch("/getdata", {
     method: "POST",
     headers: {
@@ -636,8 +633,8 @@ function sendUserInfo(player1Win, player2Win) {
       user2: user2,
       p2Hit: p2Hit,
       p2Miss: p2Miss,
-      p1Win: p1Win,
-      p2Win: p2Win,
+      p1Win: player1Win,
+      p2Win: player2Win,
     }),
   })
     .then(function (response) {
@@ -652,21 +649,21 @@ function sendUserInfo(player1Win, player2Win) {
     });
 }
 
-function countHits() {
+function countHits(p1Hit, p1Miss, p2Hit, p2Miss) {
   for (let i = 0; i < fieldPlayer1.hitLocations.length; i++) {
-    for (let v = 0; v < boardToRender.hitLocations[i].length; v++) {
-      if (boardToRender.hitLocations[i][v] == 1) {
+    for (let v = 0; v < fieldPlayer1.hitLocations[i].length; v++) {
+      if (fieldPlayer1.hitLocations[i][v] == 1) {
         p2Hit++;
-      } else if (boardToRender.hitLocations[i][v] == 2) {
+      } else if (fieldPlayer1.hitLocations[i][v] == 2) {
         p2Miss++;
       }
     }
   }
   for (let i = 0; i < fieldPlayer2.hitLocations.length; i++) {
-    for (let v = 0; v < boardToRender.hitLocations[i].length; v++) {
-      if (boardToRender.hitLocations[i][v] == 1) {
+    for (let v = 0; v < fieldPlayer2.hitLocations[i].length; v++) {
+      if (fieldPlayer2.hitLocations[i][v] == 1) {
         p1Hit++;
-      } else if (boardToRender.hitLocations[i][v] == 2) {
+      } else if (fieldPlayer2.hitLocations[i][v] == 2) {
         p1Miss++;
       }
     }
