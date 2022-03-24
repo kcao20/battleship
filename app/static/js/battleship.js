@@ -123,7 +123,7 @@ class Board {
       this.field[pointY][pointX].registerHit(pointX, pointY);
       this.hp -= 1;
       this.hitLocations[pointY][pointX] = 1;
-      return true;
+      return !(this.hp == 0);
     } else {
       this.hitLocations[pointY][pointX] = 2;
       return false;
