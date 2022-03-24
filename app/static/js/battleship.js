@@ -529,8 +529,7 @@ function passTurn() {
           [, , , , , , , , ,],
           [, , , , , , , , ,],
           [, , , , , , , , ,],
-        ],
-        2
+        ]
       );
       fieldPlayer2 = new Board(
         [
@@ -544,8 +543,7 @@ function passTurn() {
           [, , , , , , , , ,],
           [, , , , , , , , ,],
           [, , , , , , , , ,],
-        ],
-        2
+        ]
       );
       currentField = fieldPlayer1;
       otherField = fieldPlayer2;
