@@ -614,11 +614,11 @@ function passTurnButtonFunction() {
 }
 
 function sendUserInfo(player1Win, player2Win) {
-  let p1Hit = 0;
-  let p1Miss = 0;
-  let p2Hit = 0;
-  let p2Miss = 0;
-  countHits(p1Hit, p1Miss, p2Hit, p2Miss);
+  let result = countHits();
+  let p1Hit = result[0];
+  let p1Miss = result[1];
+  let p2Hit = result[2];
+  let p2Miss = result[3];
   fetch("/getdata", {
     method: "POST",
     headers: {
@@ -649,7 +649,11 @@ function sendUserInfo(player1Win, player2Win) {
     });
 }
 
-function countHits(p1Hit, p1Miss, p2Hit, p2Miss) {
+function countHits() {
+  let p1Hit = 0;
+  let p1Miss = 0;
+  let p2Hit = 0;
+  let p2Miss = 0
   for (let i = 0; i < fieldPlayer1.hitLocations.length; i++) {
     for (let v = 0; v < fieldPlayer1.hitLocations[i].length; v++) {
       if (fieldPlayer1.hitLocations[i][v] == 1) {
@@ -668,6 +672,7 @@ function countHits(p1Hit, p1Miss, p2Hit, p2Miss) {
       }
     }
   }
+  return [p1Hit, p1Miss, p2Hit, p2Miss];
 }
 
 setupBoard();
