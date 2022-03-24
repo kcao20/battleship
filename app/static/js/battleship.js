@@ -1,11 +1,6 @@
 let user1 = prompt("Player 1, please enter your username");
 let user2 = prompt("Player 2, please enter your username");
-var GAME_SCENES;
-(function (GAME_SCENES) {
-    GAME_SCENES["PLAYER_1_SETUP"] = "player-1-setup";
-    GAME_SCENES["PLAYER_2_SETUP"] = "player-2-setup";
-    GAME_SCENES["BATTLE"] = "battle";
-})(GAME_SCENES || (GAME_SCENES = {}));
+
 var BOAT_ORIENTATIONS;
 (function (BOAT_ORIENTATIONS) {
     BOAT_ORIENTATIONS["HORIZONTAL"] = "horizontal";
@@ -17,11 +12,12 @@ class Boat {
     x;
     y;
     locations = [];
-    hitLocations = [];
+    hp = 0;
     isSunk = false;
     constructor(length, locations) {
         this.length = length;
         this.locations = locations;
+        this.hp = length;
     }
     setOrientation(orientation) {
         this.orientation = orientation;
@@ -40,8 +36,9 @@ class Boat {
         return this;
     }
     registerHit(pointX, pointY) {
-        this.hitLocations.push([pointX, pointY]);
-        if (this.hitLocations.length = this.length) {
+        this.hp = this.hp - 1;
+        
+        if (this.hp <= 0) {
             this.isSunk = true;
         }
     }
@@ -160,25 +157,31 @@ class Player {
         return this;
     }
 }
-const scene = GAME_SCENES.PLAYER_1_SETUP;
-const defaultShipsToPlace = [5, 4, 3, 2];
+
+const defaultShipsToPlace = [1];
 let player1 = new Player().setShipsToPlace([...defaultShipsToPlace]);
 let player2 = new Player().setShipsToPlace([...defaultShipsToPlace]);
+
 const currentBoard = document.getElementById("currentBoard");
 const currentBoardContext = currentBoard.getContext("2d");
 const otherBoard = document.getElementById("otherBoard");
 const otherBoardContext = otherBoard.getContext("2d");
+
 const labels = document.getElementsByClassName("label");
+const playerElement = document.getElementById("player");
+const startButton = document.getElementById("start");
+const passTurnButton = document.getElementById("passTurn");
+
 let drag = false;
 let toMoveBoatX = -1;
 let toMoveBoatY = -1;
-const startButton = document.getElementById("start");
-const passTurnButton = document.getElementById("passTurn");
+
 let boardClicked = false;
 let currentPlayer = 1;
 let otherPlayer = 2;
 let currentPlayerObject = player1;
 let otherPlayerObject = player2;
+
 function changeCurrentPlayer(playerNum) {
     switch (playerNum) {
         case 1:
@@ -195,6 +198,7 @@ function changeCurrentPlayer(playerNum) {
             break;
     }
 }
+
 function setupBoard() {
     player1.randomlySetupBoard();
     player2.randomlySetupBoard();
@@ -215,24 +219,7 @@ function otherField() {
         return player2.board;
     }
 }
-// currentPlayerObject() {
-//     if (currentPlayer == 1) {
-//         return player1;
-//     } 
-//     if (currentPlayer == 2) {
-//         return player2;
-//     } 
-// }
-// otherPlayerObject(): Player {
-//     switch (currentPlayer) {
-//         case 2:
-//             return player1;
-//         case 1:
-//             return player2;
-//         default:
-//             throw new Error("Invalid current player")
-//     }
-// }
+
 function renderGrid(ctx) {
     for (let i = currentBoard.offsetWidth / 10; i < currentBoard.offsetWidth; i += currentBoard.offsetWidth / 10) {
         ctx.beginPath();
@@ -257,6 +244,7 @@ function renderBoats(ctx, boardToRender) {
         }
     }
 }
+
 function renderHits(ctx, boardToRender) {
     for (let i = 0; i < boardToRender.length; i++) {
         for (let v = 0; v < boardToRender[i].length; v++) {
@@ -271,6 +259,7 @@ function renderHits(ctx, boardToRender) {
         }
     }
 }
+
 function getGridX(e) {
     const rect = currentBoard.getBoundingClientRect();
     return Math.floor((e.clientX - rect.left) / (currentBoard.offsetWidth / 10));
@@ -341,12 +330,14 @@ function readClicks(e) {
         }, 500);
     }
 }
+
 function renderBoard(ctx, boardToRender) {
     ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
     renderBoats(ctx, boardToRender);
     renderHits(ctx, boardToRender);
     renderGrid(ctx);
 }
+
 function readClickStart(e) {
     if (!currentPlayerObject.isSetupDone) {
         drag = true;
@@ -389,6 +380,7 @@ function passTurn() {
         renderGrid(otherBoardContext);
         passTurnButton.style.display = "inline";
     }
+    console.log(otherPlayerObject, currentPlayerObject)
     if (otherPlayerObject.sunkenBoats >= otherPlayerObject.ships.length) {
         passTurnButton.style.display = "none";
         if (currentPlayer == 1) {
@@ -396,14 +388,14 @@ function passTurn() {
             player1.reset();
             player2.reset();
             changeCurrentPlayer(2);
-            // countHits();
+            countHits();
         }
         else {
             alert("Player 1 wins! Would you like to play again?");
             player1.reset();
             player2.reset();
             changeCurrentPlayer(2);
-            // countHits();
+            countHits();
         }
         otherBoard.style.display = 'none';
         startButton.style.display = 'inline';
@@ -414,8 +406,9 @@ function passTurn() {
         }
         changeCurrentPlayer(1);
     }
-    // tellPlayerTurn(currentPlayer);
+    tellPlayerTurn(currentPlayer);
 }
+
 function startButtonFunc() {
     if (currentPlayer == 2 && !player2.isSetupDone) {
         player2.isSetupDone = true;
@@ -435,22 +428,27 @@ function startButtonFunc() {
         passTurnButtonFunction();
     }
 }
-// gameStart(playerName) {
-//     if (playerName == 1) {
-//         player.innerHTML = user1 + ", set up your field!"
-//     }
-//     if (playerName == 2) {
-//         player.innerHTML = user2 + ", set up your field!"
-//     }
-// }
-// tellPlayerTurn(playerName) {
-//     if (playerName == 1) {
-//         player.innerHTML = "It is " + user1 + "'s turn."
-//     }
-//     if (playerName == 2) {
-//         player.innerHTML = "It is " + user2 + "'s turn."
-//     }
-// }
+
+
+function gameStart(playerName) {
+    sendUserInfo();
+    if (playerName == 1) {
+        player.innerHTML = user1 + ", set up your field!";
+    }
+    if (playerName == 2) {
+        player.innerHTML = user2 + ", set up your field!";
+    }
+}
+
+function tellPlayerTurn(playerName) {
+    if (playerName == 1) {
+        player.innerHTML = "It is " + user1 + "'s turn.";
+    }
+    if (playerName == 2) {
+        player.innerHTML = "It is " + user2 + "'s turn.";
+    }
+}
+
 function renderEnemyBoard(ctx, boardToRender) {
     ctx.clearRect(0, 0, currentBoard.offsetWidth, currentBoard.offsetHeight);
     renderHits(ctx, boardToRender);
@@ -465,10 +463,61 @@ function passTurnButtonFunction() {
     passTurnButton.style.display = "none";
     boardClicked = false;
 }
+
+
+function sendUserInfo() {
+    fetch("/getdata", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+
+        // A JSON payload
+        body: JSON.stringify({
+            user1: user1,
+            user2: user2,
+        }),
+    })
+        .then(function (response) {
+            // At this point, Flask has printed our JSON
+            return response.text();
+        })
+        .then(function (text) {
+            console.log("POST response: ");
+
+            // Should be 'OK' if everything was successful
+            console.log(text);
+        });
+}
+
+function countHits() {
+    for (let i = 0; i < fieldPlayer1.hitLocations.length; i++) {
+        for (let v = 0; v < boardToRender.hitLocations[i].length; v++) {
+            if (boardToRender.hitLocations[i][v] == 1) {
+                p2Hit++;
+            } else if (boardToRender.hitLocations[i][v] == 2) {
+                p2Miss++;
+            }
+        }
+    }
+    for (let i = 0; i < fieldPlayer2.hitLocations.length; i++) {
+        for (let v = 0; v < boardToRender.hitLocations[i].length; v++) {
+            if (boardToRender.hitLocations[i][v] == 1) {
+                p1Hit++;
+            } else if (boardToRender.hitLocations[i][v] == 2) {
+                p1Miss++;
+            }
+        }
+    }
+}
+
 player1.setUsername(user1);
 player2.setUsername(user2);
+
 setupBoard();
+gameStart(1)
 renderBoard(currentBoardContext, currentField());
+
 currentBoard.addEventListener('click', readClicks);
 currentBoard.addEventListener('mousedown', readClickStart);
 currentBoard.addEventListener('mousemove', readHoverCoordinate);

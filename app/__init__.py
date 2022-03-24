@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 import sqlite3
 import os
 import database
@@ -17,15 +17,37 @@ def index():
 
 @app.route("/leaderboard")
 def leaderboard():
-    cur.execute("SELECT username, gamesPlayed, gamesWon, gamesLost, shotsMissed, shotsLanded FROM usersClassic")
+    cur.execute(
+        "SELECT username, gamesPlayed, gamesWon, gamesLost, shotsMissed, shotsLanded FROM usersClassic"
+    )
     classicTable = cur.fetchall()
-    cur.execute("SELECT username, gamesPlayed, gamesWon, gamesLost, shotsMissed, shotsLanded, powersUsed FROM usersModern")
+    cur.execute(
+        "SELECT username, gamesPlayed, gamesWon, gamesLost, shotsMissed, shotsLanded, powersUsed FROM usersModern"
+    )
     modernTable = cur.fetchall()
     return render_template("leaderboard.html", classic=classicTable, modern=modernTable)
+
 
 @app.route("/play")
 def playground():
     return render_template("playground.html")
+
+
+@app.route('/getdata', methods=['GET', 'POST'])
+def getdata():
+
+    # POST request
+    if request.method == 'POST':
+        print('Incoming..')
+        a = request.get_json()
+        print(a)
+        return 'OK', 200
+
+    # GET request
+    else:
+        message = {'greeting':'Hello from Flask!'}
+        return jsonify(message)  # serialize and use JSON headers
+
 
 if __name__ == "__main__":
     app.debug = True
