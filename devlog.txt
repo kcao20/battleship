@@ -214,3 +214,7 @@ Merged pull requests and squashed conflicts.
 kevinC -- 2022-03-22 11:42
 
 added framework for js and python communication
+
+austinN -- 2022-03-22 17:26
+
+finished communication between JS and Python (in separate branch), just needs testing now

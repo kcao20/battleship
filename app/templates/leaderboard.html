@@ -1,78 +1,94 @@
 {% extends "template.html" %}
-{% block title %}Leaderboard{% endblock %}
-{% block head%}
-{{ super() }}
-{% endblock %}
+{% block title %}
+    Leaderboard
+{% endblock title %}
+{% block head %}
+    {{ super() }}
+{% endblock head %}
 {% block content %}
-
-<div class="container">
-  <select class="form-select" id="dataType" name="dataType">
-    <option value="classic-top" aira-selected>Classic Leaderboard</option>
-    <option value="modern-top">Modern Leaderboard</option>
-  </select>
-  
-  <div id="classic-top" class="vis">
-    <table class="table">
-      <tr>
-        <th>Username</th>
-        <th>Games Played</th>
-        <th>Games Won</th>
-        <th>Games Lost</th>
-        <th>Win Ratio</th>
-        <th>Shots Missed</th>
-        <th>Shots Landed</th>
-        <th>Hit Ratio</th>
-      </tr>
-      {% for i in classic %}
-      {% if i[1] != 0 and i[5] != 0 %}
-      <tr>
-        <td>{{ i[0] }}</td>
-        <td>{{ i[1] }}</td>
-        <td>{{ i[2] }}</td>
-        <td>{{ i[3] }}</td>
-        <td>{{ "%.2f"|format(i[2] * 100 / i[1]) }}%</td>
-        <td>{{ i[4] }}</td>
-        <td>{{ i[5] }}</td>
-        <td>{{ "%.2f"|format(i[5] * 100 / (i[4] + i[5])) }}%</td>
-      </tr>
-      {% endif %}
-      {% endfor %}
-    </table>
-  </div>
-  
-  <div id="modern-top" class="inv">
-    <table class="table">
-      <tr>
-        <th>Username</th>
-        <th>Games Played</th>
-        <th>Games Won</th>
-        <th>Games Lost</th>
-        <th>Win Ratio</th>
-        <th>Shots Missed</th>
-        <th>Shots Landed</th>
-        <th>Hit Ratio</th>
-        <th>Powers Used</th>
-      </tr>
-      {% for i in modern %}
-      {% if i[1] != 0 and i[5] != 0 %}
-      <tr>
-        <td>{{ i[0] }}</td>
-        <td>{{ i[1] }}</td>
-        <td>{{ i[2] }}</td>
-        <td>{{ i[3] }}</td>
-        <td>{{ "%.2f"|format(i[2] * 100 / i[1]) }}%</td>
-        <td>{{ i[4] }}</td>
-        <td>{{ i[5] }}</td>
-        <td>{{ "%.2f"|format(i[5] * 100 / (i[4] + i[5])) }}%</td>
-        <td>{{ i[6] }}</td>
-      </tr>
-      {% endif %}
-      {% endfor %}
-    </table>
-  </div>
-  
-  <script src="/static/js/leaderboard.js"></script>
-  
-</div>
-
-{% endblock %}
+    <div class="container">
+        <select class="form-select" id="dataType" name="dataType">
+            <option value="classic-top" aira-selected>
+                Classic Leaderboard
+            </option>
+            <option value="modern-top">
+                Modern Leaderboard
+            </option>
+        </select>
+        <div id="classic-top" class="vis">
+            <table class="table">
+                <tr>
+                    <th>Username</th>
+                    <th>Games Played</th>
+                    <th>Games Won</th>
+                    <th>Games Lost</th>
+                    <th>Win Ratio</th>
+                    <th>Shots Missed</th>
+                    <th>Shots Landed</th>
+                    <th>Hit Ratio</th>
+                </tr>
+                {% for i in classic %}
+                    {% if i[1] != 0 and i[5] != 0 %}
+                        <tr>
+                            <td>{{ i[0] }}</td>
+                            <td>{{ i[1] }}</td>
+                            <td>{{ i[2] }}</td>
+                            <td>{{ i[3] }}</td>
+                            <td>{{ "%.2f"|format(i[2] * 100 / i[1]) }}%</td>
+                            <td>{{ i[4] }}</td>
+                            <td>{{ i[5] }}</td>
+                            <td>{{ "%.2f"|format(i[5] * 100 / (i[4] + i[5])) }}%</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <div id="modern-top" class="inv">
+            <table class="table">
+                <tr>
+                    <th>Username</th>
+                    <th>Games Played</th>
+                    <th>Games Won</th>
+                    <th>Games Lost</th>
+                    <th>Win Ratio</th>
+                    <th>Shots Missed</th>
+                    <th>Shots Landed</th>
+                    <th>Hit Ratio</th>
+                    <th>Powers Used</th>
+                </tr>
+                {% for i in modern %}
+                    {% if i[1] != 0 and i[5] != 0 %}
+                        <tr>
+                            <td>{{ i[0] }}</td>
+                            <td>
+                                {{ i[1] }}
+                            </td>
+                            <td>
+                                {{ i[2] }}
+                            </td>
+                            <td>
+                                {{ i[3] }}
+                            </td>
+                            <td>
+                                {{ "%.2f"|format(i[2] * 100 / i[1]) }}%
+                            </td>
+                            <td>
+                                {{ i[4] }}
+                            </td>
+                            <td>
+                                {{ i[5] }}
+                            </td>
+                            <td>
+                                {{ "%.2f"|format(i[5] * 100 / (i[4] + i[5])) }}%
+                            </td>
+                            <td>
+                                {{ i[6] }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+        </div>
+        <script src="/static/js/leaderboard.js"></script>
+    </div>
+{% endblock content %}
