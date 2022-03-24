@@ -12,6 +12,8 @@ Austin: Backend (Leaderboard DB, connection between frontend and backend)
 
 Shadman: Frontend (registering hits, changing maps, abilities)
 ___
+## Working Demo: http://67.207.95.192/
+___
 ## Instructions to set up on local machine
 ### 1. Clone the repository in terminal:
 ```
