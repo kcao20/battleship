@@ -14,6 +14,10 @@ andyL -- 2022-03-07 07:74
 
 Updated the SQLite storage table with typings
 
+shadmanR -- 2022-03-07 07:74
+
+Created function to generate board
+
 austinN -- 2022-03-08 09:00
 
 Added initial files for the app to run
@@ -28,6 +32,10 @@ andyL -- 2022-03-08 09:26
 Tried to get a navbar set up for the website via Bootstrap
 Implemented Bootstrap CSS and JS libraries
 
+shadmanR -- 2022-03-08 09:26
+
+Tried writing Game objects that interact with boar
+
 austinN -- 2022-03-09 09:23
 
 Added initial functions to create new entries to track stats for users in database.py
@@ -41,6 +49,10 @@ andyL -- 2022-03-09 09:26
 Got the navbar to work (turns out the instructions I was using was for an older version of bootstrap and that didn't work with my latest version)
 Made classes for the boats and fields
 Kinda helped with implementing the leaderboard
+
+shadmanR -- 2022-03-09 09:26
+
+Tried created an algorithm to place ships but ran into issues.
 
 andyL -- 2022-03-10 09:26
 
@@ -59,6 +71,10 @@ Fix footer not being at bottom of viewport
 Add favicon
 Add jinja macros
 
+shadmanR -- 2022-03-10 19:24
+
+Tried new data structure to represent the board
+
 andyL -- 2022-03-10 20:31
 
 Grid renders ships now
@@ -76,6 +92,10 @@ andyL -- 2022-03-11 09:37
 Adjust some cursor behavior (especially with moving ships)
 Tried to implement two boards
 
+shadmanR -- 2022-03-11 09:26
+
+Tried to refactor code
+
 austinN -- 2022-03-14 09:23
 
 Finally fixed database.py, correctly updates elements in database
@@ -90,6 +110,10 @@ andyL -- 2022-03-14 09:26
 Two boards now work
 Added capability to pass turn
 
+shadmanR -- 2022-03-14 09:26
+
+Started working on a refactoring branch to use better data structures
+
 andyL -- 2022-03-15 09:39
 
 Rendering two boards now with capability to hide things as needed
@@ -102,6 +126,10 @@ Align actual database columns to html.
 Pass data from database to table
 Causes division by zero error depending on database entries
 Don't display any stats if they have any zeroes
+
+shadmanR -- 2022-03-15 09:26
+
+Continued working on a refactoring branch to use better data structures
 
 austinN -- 2022-03-16 08:55
 
@@ -116,6 +144,10 @@ andyL -- 2022-03-16 09:26
 moved some functions over to ooped functions
 made code to do end of game logic
 
+shadmanR -- 2022-03-16 09:26
+
+Continued working on a refactoring branch to use better data structures
+
 kevinC -- 2022-03-17 09:26
 
 change ratio to percentage in leaderboard
@@ -124,6 +156,10 @@ andyL -- 2022-03-17 09:26
 
 changed how shots are rendered--fatal are red, misses are purple
 some codebase changes
+
+shadmanR -- 2022-03-17 09:26
+
+Stopped working on the refactoring branch because of stark difference. Restarted refactor with new changes.
 
 austinN -- 2022-03-18 09:23
 
@@ -139,6 +175,10 @@ andyL -- 2022-03-18 09:26
 
 hid the board when passing turn (so no cheating can occur)
 
+shadmanR -- 2022-03-18 09:26
+
+Worked on refactor
+
 austinN -- 2022-03-21 09:17
 
 added username input when the game starts
@@ -148,15 +188,27 @@ andyL -- 2022-03-21 09:44
 boats randomly spawn now
 hide pass turn button when it is not the right time to show the buttons
 
+shadmanR -- 2022-03-21 09:26
+
+Worked on refactor
+
 andyL -- 2022-03-21 20:00
 
 fixed issue where boats could end up spawning on top of each other
 fix issue where boats spawn out of bounds
 
+shadmanR -- 2022-03-22 09:26
+
+Added movement of ships.
+
 andyL -- 2022-03-22 09:26
 
 fixed issue where people weren't rewarded for hitting a boat
 fixed issue where hp was not the number of slots covered by boats
+
+shadmanR -- 2022-03-22 09:26
+
+Merged pull requests and squashed conflicts.
 
 kevinC -- 2022-03-22 11:42
 
